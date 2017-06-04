@@ -1,33 +1,42 @@
 import { rotate } from "../src/rotations";
+import { Euler } from "three";
 
 it("rotates left", () => {
-  expect(rotate("left", { x: 0, y: 0, z: 0 })).toEqual({
-    x: 0,
-    y: -0.5 * Math.PI,
-    z: 0
-  });
+  const direction = new Euler(0,0,0);
+
+  rotate("left", direction);
+
+  expect(direction.x).toBe(0);
+  expect(direction.y).toBe(-0.5 * Math.PI);
+  expect(direction.z).toBe(0);
 });
 
 it("rotates right", () => {
-  expect(rotate("right", { x: 0, y: 0, z: 0 })).toEqual({
-    x: 0,
-    y: 0.5 * Math.PI,
-    z: 0
-  });
+  const direction = new Euler(0,0,0);
+
+  rotate("right", direction);
+
+  expect(direction.x).toBe(0);
+  expect(direction.y).toBe(0.5 * Math.PI);
+  expect(direction.z).toBe(0);
 });
 
 it("rotates up", () => {
-  expect(rotate("up", { x: 0, y: 0, z: 0 })).toEqual({
-    x: -0.5 * Math.PI,
-    y: 0,
-    z: 0
-  });
+  const direction = new Euler(0,0,0);
+
+  rotate("up", direction);
+
+  expect(direction.x).toBe(-0.5 * Math.PI);
+  expect(direction.y).toBe(0);
+  expect(direction.z).toBe(0);
 });
 
 it("rotates down", () => {
-  expect(rotate("down", { x: 0, y: 0, z: 0 })).toEqual({
-    x: 0.5 * Math.PI,
-    y: 0,
-    z: 0
-  });
+  const direction = new Euler(0,0,0);
+
+  rotate("down", direction);
+
+  expect(direction.x).toBe(0.5 * Math.PI);
+  expect(direction.y).toBe(0);
+  expect(direction.z).toBe(0);
 });

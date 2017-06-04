@@ -5,12 +5,13 @@ import {
   MeshBasicMaterial,
   Mesh,
   Group,
-  WebGLRenderer
+  WebGLRenderer,
+  Euler
 } from "three";
 import { rotate } from "./rotations";
 
 const UNIT_SIZE = 80;
-const ROTATION_DECAY = 0.2;
+const ROTATION_DECAY = 0.3;
 
 const scene = new Scene();
 const renderer = new WebGLRenderer();
@@ -23,7 +24,7 @@ const camera = new PerspectiveCamera(
 const unit = new BoxBufferGeometry(UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
 const material = new MeshBasicMaterial({ color: 0xff7f50, wireframe: true });
 const figure = new Group();
-let desiredRotation = { x: 0, y: 0, z: 0 };
+let desiredRotation = new Euler(0,0,0);
 
 const cubeCoordinates = [[0, 0, 0], [-1, 0, 0], [-1, 1, 0], [1, 0, 0]];
 
@@ -37,19 +38,19 @@ const handleKeyDown = evt => {
   switch (evt.code) {
     case "ArrowDown":
       evt.preventDefault();
-      desiredRotation = rotate("down", desiredRotation);
+      rotate("down", desiredRotation);
       break;
     case "ArrowUp":
       evt.preventDefault();
-      desiredRotation = rotate("up", desiredRotation);
+      rotate("up", desiredRotation);
       break;
     case "ArrowLeft":
       evt.preventDefault();
-      desiredRotation = rotate("left", desiredRotation);
+      rotate("left", desiredRotation);
       break;
     case "ArrowRight":
       evt.preventDefault();
-      desiredRotation = rotate("right", desiredRotation);
+      rotate("right", desiredRotation);
       break;
     default:
       break;
