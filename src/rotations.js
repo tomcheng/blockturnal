@@ -1,35 +1,36 @@
-import { Matrix4 } from "three";
+import { Matrix4, Quaternion } from "three";
 
 const QUARTER_TURN = 0.5 * Math.PI;
 
 export const rotate = (direction, rotation) => {
-  const m = new Matrix4();
+  const m = new Quaternion();
   const r = new Matrix4();
-  m.makeRotationFromEuler(rotation);
+  const q = new Quaternion();
+  m.setFromEuler(rotation);
 
   switch (direction) {
     case "left": {
-      r.makeRotationY(-QUARTER_TURN);
-      m.multiply(r);
-      rotation.setFromRotationMatrix(m);
+      q.setFromRotationMatrix(r.makeRotationY(-QUARTER_TURN));
+      m.premultiply(q);
+      rotation.setFromQuaternion(m);
       break;
     }
     case "right": {
-      r.makeRotationY(QUARTER_TURN);
-      m.multiply(r);
-      rotation.setFromRotationMatrix(m);
+      q.setFromRotationMatrix(r.makeRotationY(QUARTER_TURN));
+      m.premultiply(q);
+      rotation.setFromQuaternion(m);
       break;
     }
     case "up": {
-      r.makeRotationX(-QUARTER_TURN);
-      m.multiply(r);
-      rotation.setFromRotationMatrix(m);
+      q.setFromRotationMatrix(r.makeRotationX(-QUARTER_TURN));
+      m.premultiply(q);
+      rotation.setFromQuaternion(m);
       break;
     }
     case "down": {
-      r.makeRotationX(QUARTER_TURN);
-      m.multiply(r);
-      rotation.setFromRotationMatrix(m);
+      q.setFromRotationMatrix(r.makeRotationX(QUARTER_TURN));
+      m.premultiply(q);
+      rotation.setFromQuaternion(m);
       break;
     }
     default:
