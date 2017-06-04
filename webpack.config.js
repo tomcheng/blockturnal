@@ -8,5 +8,14 @@ module.exports = {
   },
   devServer: {
     contentBase: path.join(__dirname, "public")
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include: path.resolve(__dirname, "src"),
+        loader: "babel-loader"
+      }
+    ]
   }
 };
