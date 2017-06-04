@@ -1,39 +1,31 @@
 import { Matrix4, Quaternion } from "three";
 
 const QUARTER_TURN = 0.5 * Math.PI;
+const r = new Matrix4();
+const TURN_LEFT = new Quaternion();
+const TURN_RIGHT = new Quaternion();
+const TURN_UP = new Quaternion();
+const TURN_DOWN = new Quaternion();
+TURN_LEFT.setFromRotationMatrix(r.makeRotationY(-QUARTER_TURN));
+TURN_RIGHT.setFromRotationMatrix(r.makeRotationY(QUARTER_TURN));
+TURN_UP.setFromRotationMatrix(r.makeRotationX(-QUARTER_TURN));
+TURN_DOWN.setFromRotationMatrix(r.makeRotationX(QUARTER_TURN));
 
 export const rotate = (direction, rotation) => {
-  const m = new Quaternion();
-  const r = new Matrix4();
-  const q = new Quaternion();
-  m.setFromEuler(rotation);
-
   switch (direction) {
-    case "left": {
-      q.setFromRotationMatrix(r.makeRotationY(-QUARTER_TURN));
-      m.premultiply(q);
-      rotation.setFromQuaternion(m);
+    case "left":
+      rotation.premultiply(TURN_LEFT);
       break;
-    }
-    case "right": {
-      q.setFromRotationMatrix(r.makeRotationY(QUARTER_TURN));
-      m.premultiply(q);
-      rotation.setFromQuaternion(m);
+    case "right":
+      rotation.premultiply(TURN_RIGHT);
       break;
-    }
-    case "up": {
-      q.setFromRotationMatrix(r.makeRotationX(-QUARTER_TURN));
-      m.premultiply(q);
-      rotation.setFromQuaternion(m);
+    case "up":
+      rotation.premultiply(TURN_UP);
       break;
-    }
-    case "down": {
-      q.setFromRotationMatrix(r.makeRotationX(QUARTER_TURN));
-      m.premultiply(q);
-      rotation.setFromQuaternion(m);
+    case "down":
+      rotation.premultiply(TURN_DOWN);
       break;
-    }
     default:
-      return rotation;
+      break;
   }
 };

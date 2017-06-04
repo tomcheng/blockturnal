@@ -6,12 +6,13 @@ import {
   Mesh,
   Group,
   WebGLRenderer,
-  Euler
+  Euler,
+  Quaternion
 } from "three";
 import { rotate } from "./rotations";
 
 const UNIT_SIZE = 80;
-const ROTATION_DECAY = 0.3;
+const ROTATION_DECAY = 0.5;
 
 const scene = new Scene();
 const renderer = new WebGLRenderer();
@@ -24,7 +25,8 @@ const camera = new PerspectiveCamera(
 const unit = new BoxBufferGeometry(UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
 const material = new MeshBasicMaterial({ color: 0xff7f50, wireframe: true });
 const figure = new Group();
-let desiredRotation = new Euler(0,0,0);
+const desiredRotation = new Quaternion();
+desiredRotation.setFromEuler(new Euler(0,0,0));
 
 const cubeCoordinates = [[0, 0, 0], [-1, 0, 0], [-1, 1, 0], [1, 0, 0]];
 
@@ -76,9 +78,7 @@ const init = () => {
 const animate = () => {
   requestAnimationFrame(animate);
 
-  figure.rotation.x += ROTATION_DECAY * (desiredRotation.x - figure.rotation.x);
-  figure.rotation.y += ROTATION_DECAY * (desiredRotation.y - figure.rotation.y);
-  figure.rotation.z += ROTATION_DECAY * (desiredRotation.z - figure.rotation.z);
+  Quaternion.slerp(figure.quaternion, desiredRotation, figure.quaternion, ROTATION_DECAY);
 
   renderer.render(scene, camera);
 };
