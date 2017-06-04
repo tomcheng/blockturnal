@@ -7,8 +7,10 @@ import {
   Group,
   WebGLRenderer
 } from "three";
+import { rotate } from "./rotations";
 
 const UNIT_SIZE = 80;
+const ROTATION_DECAY = 0.2;
 
 const scene = new Scene();
 const renderer = new WebGLRenderer();
@@ -21,8 +23,7 @@ const camera = new PerspectiveCamera(
 const unit = new BoxBufferGeometry(UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
 const material = new MeshBasicMaterial({ color: 0xff7f50, wireframe: true });
 const figure = new Group();
-let xRotation = 0;
-let yRotation = 0;
+let desiredRotation = { x: 0, y: 0, z: 0 };
 
 const cubeCoordinates = [[0, 0, 0], [-1, 0, 0], [-1, 1, 0], [1, 0, 0]];
 
@@ -36,19 +37,19 @@ const handleKeyDown = evt => {
   switch (evt.code) {
     case "ArrowDown":
       evt.preventDefault();
-      xRotation = xRotation + 1;
+      desiredRotation = rotate("down", desiredRotation);
       break;
     case "ArrowUp":
       evt.preventDefault();
-      xRotation = xRotation - 1;
+      desiredRotation = rotate("up", desiredRotation);
       break;
     case "ArrowLeft":
       evt.preventDefault();
-      yRotation = yRotation - 1;
+      desiredRotation = rotate("left", desiredRotation);
       break;
     case "ArrowRight":
       evt.preventDefault();
-      yRotation = yRotation + 1;
+      desiredRotation = rotate("right", desiredRotation);
       break;
     default:
       break;
@@ -74,8 +75,9 @@ const init = () => {
 const animate = () => {
   requestAnimationFrame(animate);
 
-  figure.rotation.x += 0.2 * (xRotation * 0.5 * Math.PI - figure.rotation.x);
-  figure.rotation.y += 0.2 * (yRotation * 0.5 * Math.PI - figure.rotation.y);
+  figure.rotation.x += ROTATION_DECAY * (desiredRotation.x - figure.rotation.x);
+  figure.rotation.y += ROTATION_DECAY * (desiredRotation.y - figure.rotation.y);
+  figure.rotation.z += ROTATION_DECAY * (desiredRotation.z - figure.rotation.z);
 
   renderer.render(scene, camera);
 };
