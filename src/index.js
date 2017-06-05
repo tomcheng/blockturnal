@@ -1,19 +1,12 @@
-import { Scene, PerspectiveCamera, WebGLRenderer, Vector3 } from "three";
-import { UNIT_SIZE, INITIAL_SCREEN_DISTANCE } from "./constants";
+import { Scene, WebGLRenderer } from "three";
+import Camera from "./camera";
 import Figure from "./figure";
 import Screen from "./screen";
 
 const scene = new Scene();
 const renderer = new WebGLRenderer();
-const camera = new PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  1,
-  10000
-);
-camera.translateX(-3 * UNIT_SIZE);
-camera.lookAt(new Vector3(0, 0, -INITIAL_SCREEN_DISTANCE));
 
+const camera = new Camera();
 const figure = new Figure();
 const screen = new Screen();
 
@@ -35,6 +28,9 @@ const handleKeyDown = evt => {
       evt.preventDefault();
       figure.rotate("right");
       break;
+    case "KeyQ":
+      camera.togglePosition();
+      break;
     default:
       break;
   }
@@ -43,11 +39,11 @@ const handleKeyDown = evt => {
 const animate = () => {
   requestAnimationFrame(animate);
   figure.update();
-  renderer.render(scene, camera);
+  camera.update();
+  renderer.render(scene, camera.camera);
 };
 
 (() => {
-  camera.position.z = 1000;
   window.addEventListener("keydown", handleKeyDown);
 
   scene.add(figure.mesh);

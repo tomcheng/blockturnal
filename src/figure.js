@@ -1,22 +1,9 @@
-import {
-  Group,
-  Quaternion,
-  Euler,
-  Mesh,
-  BoxBufferGeometry
-} from "three";
+import { Group, Quaternion, Euler, Mesh, BoxBufferGeometry } from "three";
 import { UNIT_SIZE, MATERIAL, ROTATION_DECAY } from "./constants";
 import { rotate } from "./rotations";
 
 const unit = new BoxBufferGeometry(UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
-
 const cubeCoordinates = [[0, 0, 0], [-1, 0, 0], [-1, 1, 0], [1, 0, 0]];
-
-const getPosition = coor => [
-  UNIT_SIZE * coor[0],
-  UNIT_SIZE * coor[1],
-  UNIT_SIZE * coor[2]
-];
 
 class Figure {
   constructor() {
@@ -24,7 +11,7 @@ class Figure {
 
     cubeCoordinates.forEach(coordinates => {
       const cube = new Mesh(unit, MATERIAL);
-      cube.position.set(...getPosition(coordinates));
+      cube.position.set(...coordinates.map(c => UNIT_SIZE * c));
       this.mesh.add(cube);
     });
 
@@ -43,7 +30,6 @@ class Figure {
       this.mesh.quaternion,
       ROTATION_DECAY
     );
-
   }
 }
 
