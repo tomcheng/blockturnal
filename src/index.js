@@ -1,19 +1,7 @@
-import {
-  Scene,
-  PerspectiveCamera,
-  Mesh,
-  WebGLRenderer,
-  Shape,
-  ExtrudeGeometry,
-  Vector3
-} from "three";
-import {
-  UNIT_SIZE,
-  INITIAL_SCREEN_DISTANCE,
-  SCREEN_SIZE,
-  MATERIAL
-} from "./constants";
+import { Scene, PerspectiveCamera, WebGLRenderer, Vector3 } from "three";
+import { UNIT_SIZE, INITIAL_SCREEN_DISTANCE } from "./constants";
 import Figure from "./figure";
+import Screen from "./screen";
 
 const scene = new Scene();
 const renderer = new WebGLRenderer();
@@ -24,19 +12,10 @@ const camera = new PerspectiveCamera(
   10000
 );
 camera.translateX(-3 * UNIT_SIZE);
-camera.translateZ(10 * UNIT_SIZE);
 camera.lookAt(new Vector3(0, 0, -INITIAL_SCREEN_DISTANCE));
 
 const figure = new Figure();
-
-const screen = new Shape();
-screen.moveTo(0.5 * SCREEN_SIZE, 0.5 * SCREEN_SIZE);
-screen.lineTo(0.5 * SCREEN_SIZE, -0.5 * SCREEN_SIZE);
-screen.lineTo(-0.5 * SCREEN_SIZE, -0.5 * SCREEN_SIZE);
-screen.lineTo(-0.5 * SCREEN_SIZE, 0.5 * SCREEN_SIZE);
-screen.lineTo(0.5 * SCREEN_SIZE, 0.5 * SCREEN_SIZE);
-const extrudeSettings = { amount: 1, bevelEnabled: false };
-const screenGeometry = new ExtrudeGeometry(screen, extrudeSettings);
+const screen = new Screen();
 
 const handleKeyDown = evt => {
   switch (evt.code) {
@@ -63,9 +42,7 @@ const handleKeyDown = evt => {
 
 const animate = () => {
   requestAnimationFrame(animate);
-
   figure.update();
-
   renderer.render(scene, camera);
 };
 
@@ -74,11 +51,7 @@ const animate = () => {
   window.addEventListener("keydown", handleKeyDown);
 
   scene.add(figure.mesh);
-
-  const screenMesh = new Mesh(screenGeometry, MATERIAL);
-  screenMesh.position.set(0, 0, -INITIAL_SCREEN_DISTANCE);
-
-  scene.add(screenMesh);
+  scene.add(screen.mesh);
 
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
