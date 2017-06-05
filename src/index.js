@@ -7,12 +7,17 @@ import {
   Group,
   WebGLRenderer,
   Euler,
-  Quaternion
+  Quaternion,
+  Shape,
+  ExtrudeGeometry,
+  Vector3
 } from "three";
 import { rotate } from "./rotations";
 
-const UNIT_SIZE = 80;
-const ROTATION_DECAY = 0.5;
+const UNIT_SIZE = 60;
+const ROTATION_DECAY = 0.4;
+const INITIAL_SCREEN_DISTANCE = 4000;
+const SCREEN_SIZE = 12 * UNIT_SIZE;
 
 const scene = new Scene();
 const renderer = new WebGLRenderer();
@@ -22,11 +27,24 @@ const camera = new PerspectiveCamera(
   1,
   10000
 );
+camera.translateX(-3 * UNIT_SIZE);
+camera.translateZ(10 * UNIT_SIZE);
+camera.lookAt(new Vector3(0,0,-INITIAL_SCREEN_DISTANCE));
 const unit = new BoxBufferGeometry(UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
 const material = new MeshBasicMaterial({ color: 0xff7f50, wireframe: true });
+
 const figure = new Group();
 const desiredRotation = new Quaternion();
 desiredRotation.setFromEuler(new Euler(0,0,0));
+
+const screen = new Shape();
+screen.moveTo(0.5 * SCREEN_SIZE, 0.5 * SCREEN_SIZE);
+screen.lineTo(0.5 * SCREEN_SIZE, -0.5 * SCREEN_SIZE);
+screen.lineTo(-0.5 * SCREEN_SIZE, -0.5 * SCREEN_SIZE);
+screen.lineTo(-0.5 * SCREEN_SIZE, 0.5 * SCREEN_SIZE);
+screen.lineTo(0.5 * SCREEN_SIZE, 0.5 * SCREEN_SIZE);
+const extrudeSettings = {amount: 1, bevelEnabled: false, };
+const screenGeometry = new ExtrudeGeometry(screen, extrudeSettings);
 
 const cubeCoordinates = [[0, 0, 0], [-1, 0, 0], [-1, 1, 0], [1, 0, 0]];
 
@@ -59,22 +77,6 @@ const handleKeyDown = evt => {
   }
 };
 
-const init = () => {
-  camera.position.z = 1000;
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
-
-  window.addEventListener("keydown", handleKeyDown);
-
-  cubeCoordinates.forEach(coordinates => {
-    const cube = new Mesh(unit, material);
-    cube.position.set(...getPosition(coordinates));
-    figure.add(cube);
-  });
-
-  scene.add(figure);
-};
-
 const animate = () => {
   requestAnimationFrame(animate);
 
@@ -83,5 +85,24 @@ const animate = () => {
   renderer.render(scene, camera);
 };
 
-init();
-animate();
+(() => {
+  camera.position.z = 1000;
+  window.addEventListener("keydown", handleKeyDown);
+
+  cubeCoordinates.forEach(coordinates => {
+    const cube = new Mesh(unit, material);
+    cube.position.set(...getPosition(coordinates));
+    figure.add(cube);
+  });
+  scene.add(figure);
+
+  const screenMesh = new Mesh(screenGeometry, material);
+  screenMesh.position.set(0,0,-INITIAL_SCREEN_DISTANCE);
+
+  scene.add(screenMesh);
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  animate();
+})();
