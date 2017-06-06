@@ -12,28 +12,30 @@ const POSITIONS = {
 
 class Camera {
   constructor() {
-    this.desiredPosition = "left";
-
-    this.camera = new PerspectiveCamera(
+    let desiredPosition = "left";
+    const camera = new PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
       1,
       10000
     );
-    this.camera.translateX(POSITIONS[this.desiredPosition]);
-    this.camera.translateZ(1000);
-    this.camera.lookAt(new Vector3(0, 0, -INITIAL_SCREEN_DISTANCE));
-  }
 
-  togglePosition() {
-    this.desiredPosition = this.desiredPosition === "left" ? "right" : "left";
-  }
+    camera.translateX(POSITIONS[desiredPosition]);
+    camera.translateZ(1000);
+    camera.lookAt(new Vector3(0, 0, -INITIAL_SCREEN_DISTANCE));
 
-  update() {
-    this.camera.translateX(
-      -CAMERA_POSITION_DECAY *
-        (this.camera.position.x - POSITIONS[this.desiredPosition])
-    );
+    this.camera = camera;
+
+    this.togglePosition = () => {
+      desiredPosition = desiredPosition === "left" ? "right" : "left";
+    };
+
+    this.update = () => {
+      camera.translateX(
+        -CAMERA_POSITION_DECAY *
+          (camera.position.x - POSITIONS[desiredPosition])
+      );
+    };
   }
 }
 

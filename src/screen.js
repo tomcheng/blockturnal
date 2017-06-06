@@ -11,7 +11,6 @@ class Screen {
       new Vector2(0.5 * SCREEN_SIZE, -0.5 * SCREEN_SIZE),
       new Vector2(0.5 * SCREEN_SIZE, 0.5 * SCREEN_SIZE)
     ]);
-
     const hole = new Path([
       new Vector2(-1.5 * UNIT_SIZE, -0.5 * UNIT_SIZE),
       new Vector2(-1.5 * UNIT_SIZE, 1.5 * UNIT_SIZE),
@@ -23,8 +22,11 @@ class Screen {
 
     shape.holes = [hole];
 
-    this.mesh = new Mesh(new ExtrudeGeometry(shape, extrudeSettings), MATERIAL);
-    this.mesh.position.set(0, 0, -INITIAL_SCREEN_DISTANCE);
+    const mesh = new Mesh(new ExtrudeGeometry(shape, extrudeSettings), MATERIAL);
+
+    mesh.position.set(0, 0, -INITIAL_SCREEN_DISTANCE);
+
+    this.mesh = mesh;
   }
 }
 
