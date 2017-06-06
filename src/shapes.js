@@ -29,7 +29,6 @@ const center = vertices => {
 
 export const getOutline = coordinates => {
   const vertices = [];
-  let currentPosition = [0, 0], currentDirection = "right";
 
   const hasCoordinates = (x, y) =>
     coordinates.some(coor => coor[0] === x && coor[1] === y);
@@ -150,6 +149,8 @@ export const getOutline = coordinates => {
   };
 
   const start = getStart();
+  let currentPosition = start;
+  let currentDirection = "right";
 
   vertices.push([start[0] * UNIT_SIZE, start[1] * UNIT_SIZE]);
 

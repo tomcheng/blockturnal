@@ -46,3 +46,16 @@ it("Gets an outline for a shape that doesn't start on origin", () => {
   ]);
 });
 
+it("Gets an outline for another shape", () => {
+  // * * *
+  // *
+  expect(getOutline([[-1, 0], [0, 0], [1, 0], [-1, -1]])).toEqual([
+    [-1.5 * UNIT_SIZE, -UNIT_SIZE],
+    [-0.5 * UNIT_SIZE, -UNIT_SIZE],
+    [-0.5 * UNIT_SIZE, 0],
+    [1.5 * UNIT_SIZE, 0],
+    [1.5 * UNIT_SIZE, UNIT_SIZE],
+    [-1.5 * UNIT_SIZE, UNIT_SIZE]
+  ]);
+});
+
