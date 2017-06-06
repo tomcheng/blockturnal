@@ -4,10 +4,10 @@ import { rotate } from "./rotations";
 import { getDimensions } from "./measurements";
 
 const unit = new BoxBufferGeometry(UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
-const cubeCoordinates = [[0, 0, 0], [-1, 0, 0], [-1, 1, 0], [1, 0, 0]];
 
 class Figure {
   constructor() {
+    const cubeCoordinates = [[0, 0, 0], [0, 1, 0], [-1, 1, 0]];
     const mesh = new Group();
     const desiredRotation = new Quaternion();
     const { width, height, depth, x, y, z } = getDimensions(cubeCoordinates);
@@ -24,6 +24,8 @@ class Figure {
     });
 
     this.mesh = mesh;
+
+    this.coordinates = cubeCoordinates;
 
     this.rotate = direction => {
       rotate(direction, desiredRotation);

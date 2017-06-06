@@ -8,7 +8,7 @@ const renderer = new WebGLRenderer();
 
 const camera = new Camera();
 const figure = new Figure();
-const screen = new Screen();
+const screen = new Screen(figure.coordinates);
 
 const handleKeyDown = evt => {
   switch (evt.code) {
