@@ -12,6 +12,7 @@
   "author": "Thomas Cheng",
   "license": "ISC",
   "dependencies": {
+    "lodash": "4.17.4",
     "three": "0.85.2"
   },
   "devDependencies": {
