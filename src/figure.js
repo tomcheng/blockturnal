@@ -7,7 +7,7 @@ const unit = new BoxBufferGeometry(UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
 
 class Figure {
   constructor() {
-    const cubeCoordinates = [[0, 0, 0], [0, 1, 0], [-1, 1, 0], [1, 1, 0]];
+    const cubeCoordinates = [[0, 0, 0], [0, 1, 0], [-1, 1, 0], [1, 1, 0], [1, 1, 1]];
     const mesh = new Group();
     const desiredRotation = new Quaternion();
     const { width, height, depth, x, y, z } = getDimensions(cubeCoordinates);
