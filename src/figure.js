@@ -7,29 +7,31 @@ const cubeCoordinates = [[0, 0, 0], [-1, 0, 0], [-1, 1, 0], [1, 0, 0]];
 
 class Figure {
   constructor() {
-    this.mesh = new Group();
+    const mesh = new Group();
+    const desiredRotation = new Quaternion();
+
+    desiredRotation.setFromEuler(new Euler(0, 0, 0));
 
     cubeCoordinates.forEach(coordinates => {
       const cube = new Mesh(unit, MATERIAL);
       cube.position.set(...coordinates.map(c => UNIT_SIZE * c));
-      this.mesh.add(cube);
+      mesh.add(cube);
     });
 
-    this.desiredRotation = new Quaternion();
-    this.desiredRotation.setFromEuler(new Euler(0, 0, 0));
-  }
+    this.mesh = mesh;
 
-  rotate(direction) {
-    rotate(direction, this.desiredRotation);
-  }
+    this.rotate = direction => {
+      rotate(direction, desiredRotation);
+    };
 
-  update() {
-    Quaternion.slerp(
-      this.mesh.quaternion,
-      this.desiredRotation,
-      this.mesh.quaternion,
-      ROTATION_DECAY
-    );
+    this.update = () => {
+      Quaternion.slerp(
+        mesh.quaternion,
+        desiredRotation,
+        mesh.quaternion,
+        ROTATION_DECAY
+      );
+    };
   }
 }
 
