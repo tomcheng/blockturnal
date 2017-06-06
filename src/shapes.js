@@ -1,5 +1,32 @@
 import { UNIT_SIZE } from "./constants";
 
+const center = vertices => {
+  let xMin = null,
+    xMax = null,
+    yMin = null,
+    yMax = null;
+
+  vertices.forEach(vertex => {
+    if (xMin === null || vertex[0] < xMin) {
+      xMin = vertex[0];
+    }
+    if (yMin === null || vertex[1] < yMin) {
+      yMin = vertex[1];
+    }
+    if (xMax === null || vertex[0] > xMax) {
+      xMax = vertex[0];
+    }
+    if (yMax === null || vertex[1] > yMax) {
+      yMax = vertex[1];
+    }
+  });
+
+  const xOffset = -xMin - 0.5 * (xMax - xMin);
+  const yOffset = -yMin - 0.5 * (yMax - yMin);
+
+  return vertices.map(vertex => [vertex[0] + xOffset, vertex[1] + yOffset]);
+};
+
 export const getOutline = coordinates => {
   const vertices = [];
   let currentPosition = [0, 0], currentDirection = "right";
@@ -140,5 +167,5 @@ export const getOutline = coordinates => {
     currentDirection !== "down"
   );
 
-  return vertices;
+  return center(vertices);
 };
