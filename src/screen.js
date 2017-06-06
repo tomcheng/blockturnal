@@ -1,14 +1,13 @@
 import { Shape, Path, ExtrudeGeometry, Mesh, Vector2 } from "three";
 import { SCREEN_SIZE, MATERIAL, INITIAL_SCREEN_DISTANCE } from "./constants";
-import { getProjection } from "./projections";
+import { getRandomProjection } from "./projections";
 import { getOutline } from "./shapes";
-import random from "lodash/random"
 
 const extrudeSettings = { amount: 1, bevelEnabled: false };
 
 class Screen {
   constructor(coordinates) {
-    const projection = getProjection({ axis: ["x", "y", "z"][random(0,2)], coordinates });
+    const projection = getRandomProjection(coordinates);
     const outline = getOutline(projection);
 
     const shape = new Shape([
