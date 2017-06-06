@@ -31,6 +31,10 @@ const handleKeyDown = evt => {
     case "KeyQ":
       camera.togglePosition();
       break;
+    case "Space":
+      evt.preventDefault();
+      screen.getNewHole();
+      break;
     default:
       break;
   }
