@@ -9,23 +9,23 @@ export const getDimensions = cubeCoordinates => {
     zMax = null;
 
   cubeCoordinates.forEach(coor => {
-    if (xMin === null || coor[0] < xMin) {
-      xMin = coor[0];
+    if (xMin === null || coor.x < xMin) {
+      xMin = coor.x;
     }
-    if (yMin === null || coor[1] < yMin) {
-      yMin = coor[1];
+    if (yMin === null || coor.y < yMin) {
+      yMin = coor.y;
     }
-    if (zMin === null || coor[2] < zMin) {
-      zMin = coor[2];
+    if (zMin === null || coor.z < zMin) {
+      zMin = coor.z;
     }
-    if (xMax === null || coor[0] > xMax) {
-      xMax = coor[0];
+    if (xMax === null || coor.x > xMax) {
+      xMax = coor.x;
     }
-    if (yMax === null || coor[1] > yMax) {
-      yMax = coor[1];
+    if (yMax === null || coor.y > yMax) {
+      yMax = coor.y;
     }
-    if (zMax === null || coor[2] > zMax) {
-      zMax = coor[2];
+    if (zMax === null || coor.z > zMax) {
+      zMax = coor.z;
     }
   });
 

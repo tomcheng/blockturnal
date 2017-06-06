@@ -3,9 +3,9 @@ import isEqual from "lodash/isEqual";
 import random from "lodash/random";
 
 const MAPPINGS = {
-  x: coor => [coor[1], coor[2]],
-  y: coor => [coor[0], coor[2]],
-  z: coor => [coor[0], coor[1]]
+  x: coor => [coor.y, coor.z],
+  y: coor => [coor.x, coor.z],
+  z: coor => [coor.x, coor.y]
 };
 
 const flipProjection = flipOrNot => coordinates =>
