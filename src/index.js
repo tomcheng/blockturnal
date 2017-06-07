@@ -8,7 +8,7 @@ const renderer = new WebGLRenderer();
 
 const camera = new Camera();
 const figure = new Figure();
-const screen = new Screen(figure);
+const screen = new Screen();
 
 const handleKeyDown = evt => {
   switch (evt.code) {
@@ -33,7 +33,7 @@ const handleKeyDown = evt => {
       break;
     case "Space":
       evt.preventDefault();
-      screen.getNewHole();
+      screen.newHole(figure.getRandomProjection());
       break;
     default:
       break;
@@ -49,6 +49,8 @@ const animate = () => {
 
 (() => {
   window.addEventListener("keydown", handleKeyDown);
+
+  screen.newHole(figure.getRandomProjection());
 
   scene.add(figure.mesh);
   scene.add(screen.mesh);

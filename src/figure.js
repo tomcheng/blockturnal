@@ -9,7 +9,7 @@ import {
 import { UNIT_SIZE, MATERIAL, ROTATION_DECAY } from "./constants";
 import { rotate } from "./rotations";
 import { getDimensions } from "./measurements";
-import { getProjection } from "./projections";
+import { getProjection, getRandomProjection } from "./projections";
 
 const unit = new BoxBufferGeometry(UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
 
@@ -41,8 +41,6 @@ class Figure {
 
     this.mesh = mesh;
 
-    this.unitCoordinates = unitCoordinates;
-
     this.rotate = direction => {
       rotate(direction, desiredRotation);
     };
@@ -52,6 +50,10 @@ class Figure {
         c.clone().applyQuaternion(desiredRotation).round()
       );
       return getProjection({ axis: "z", coordinates: rotatedCoordinates });
+    };
+
+    this.getRandomProjection = () => {
+      return getRandomProjection(unitCoordinates);
     };
 
     this.update = () => {
