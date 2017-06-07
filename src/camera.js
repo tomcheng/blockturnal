@@ -2,7 +2,8 @@ import { PerspectiveCamera, Vector3 } from "three";
 import {
   INITIAL_SCREEN_DISTANCE,
   CAMERA_OFFSET,
-  CAMERA_POSITION_DECAY
+  CAMERA_POSITION_DECAY,
+  CAMERA_DISTANCE
 } from "./constants";
 
 const POSITIONS = {
@@ -17,11 +18,11 @@ class Camera {
       75,
       window.innerWidth / window.innerHeight,
       1,
-      10000
+      INITIAL_SCREEN_DISTANCE + CAMERA_DISTANCE + 10,
     );
 
     camera.translateX(POSITIONS[desiredPosition]);
-    camera.translateZ(1000);
+    camera.translateZ(CAMERA_DISTANCE);
     camera.lookAt(new Vector3(0, 0, -INITIAL_SCREEN_DISTANCE));
 
     this.camera = camera;
