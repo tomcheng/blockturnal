@@ -22,7 +22,9 @@ const center = vertices => {
   const xOffset = -xMin - 0.5 * (xMax - xMin);
   const yOffset = -yMin - 0.5 * (yMax - yMin);
 
-  return vertices.map(vertex => new Vector2(vertex.x + xOffset, vertex.y + yOffset));
+  return vertices.map(
+    vertex => new Vector2(vertex.x + xOffset, vertex.y + yOffset)
+  );
 };
 
 export const getOutline = coordinates => {

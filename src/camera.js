@@ -18,7 +18,7 @@ class Camera {
       75,
       window.innerWidth / window.innerHeight,
       1,
-      INITIAL_SCREEN_DISTANCE + CAMERA_DISTANCE + 10,
+      INITIAL_SCREEN_DISTANCE + CAMERA_DISTANCE + 10
     );
 
     camera.translateX(POSITIONS[desiredPosition]);

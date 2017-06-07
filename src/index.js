@@ -13,68 +13,53 @@ const screenManager = new ScreenManager();
 let ended = false;
 
 const handleKeyDown = evt => {
+  if (["ArrowDown", "ArrowUp", "Space"].includes(evt.code)) {
+    evt.preventDefault();
+  }
+
+  if (ended) {
+    if (evt.code === "Space") {
+      figure.reset();
+      screenManager.reset();
+      screenManager.setNewHole(figure.getRandomProjection());
+      ended = false;
+    }
+    return;
+  }
+
   switch (evt.code) {
     case "ArrowDown":
-      evt.preventDefault();
-      if (!ended) {
-        figure.rotate("down");
-      }
+      figure.rotate("down");
       break;
     case "ArrowUp":
-      evt.preventDefault();
-      if (!ended) {
-        figure.rotate("up");
-      }
+      figure.rotate("up");
       break;
     case "ArrowLeft":
-      evt.preventDefault();
-      if (!ended) {
-        figure.rotate("left");
-      }
+      figure.rotate("left");
       break;
     case "ArrowRight":
-      evt.preventDefault();
-      if (!ended) {
-        figure.rotate("right");
-      }
+      figure.rotate("right");
       break;
     case "KeyQ":
-      if (!ended) {
-        camera.togglePosition();
-      }
+      camera.togglePosition();
       break;
     case "Space":
-      evt.preventDefault();
-
-      if (ended) {
-        figure.reset();
-        screenManager.reset();
-        screenManager.setNewHole(figure.getRandomProjection());
-        ended = false;
-        return;
-      }
-
-      if (
-        screenManager.checkFit(figure.getCurrentProjection())
-      ) {
-        screenManager
-          .zoom()
-          .then(() => screenManager.setNewHole(figure.getRandomProjection()));
-      } else {
-        screenManager.zoomAndStop().then(() => {
-          figure.turnRed();
-          ended = true;
-        });
-      }
-
-      break;
-    default:
+      screenManager.zoom();
       break;
   }
 };
 
 const animate = () => {
   requestAnimationFrame(animate);
+  if (screenManager.isAtFigure()) {
+    if (screenManager.checkFit(figure.getCurrentProjection())) {
+      screenManager.setNextScreen(figure.getRandomProjection());
+    } else {
+      figure.turnRed();
+      screenManager.stop();
+      ended = true;
+    }
+  }
   figure.update();
   camera.update();
   screenManager.update();

@@ -6,7 +6,12 @@ import {
   BoxBufferGeometry,
   Vector3
 } from "three";
-import { UNIT_SIZE, MATERIAL, LOSER_MATERIAL, ROTATION_DECAY } from "./constants";
+import {
+  UNIT_SIZE,
+  MATERIAL,
+  LOSER_MATERIAL,
+  ROTATION_DECAY
+} from "./constants";
 import { rotate } from "./rotations";
 import { getDimensions } from "./measurements";
 import { getProjection, getRandomProjection } from "./projections";

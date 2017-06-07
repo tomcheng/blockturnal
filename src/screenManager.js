@@ -1,5 +1,5 @@
 import Screen from "./screen";
-import { INITIAL_SCREEN_DISTANCE, CAMERA_DISTANCE } from "./constants";
+import { INITIAL_SCREEN_DISTANCE } from "./constants";
 
 class ScreenManager {
   constructor() {
@@ -18,24 +18,19 @@ class ScreenManager {
     this.getScreens = () => screens;
 
     this.zoom = () => {
-      return new Promise(resolve => {
-        currentScreen.zoom().then(() => {
-          previousScreen = currentScreen;
-          currentIndex = (currentIndex + 1) % screens.length;
-          currentScreen = screens[currentIndex];
-          currentScreen.moveTo(-INITIAL_SCREEN_DISTANCE);
-          resolve();
-        });
-      });
+      currentScreen.zoom();
     };
 
-    this.zoomAndStop = () => {
-      return new Promise(resolve => {
-        currentScreen.zoom().then(() => {
-          stopped = true;
-          resolve();
-        });
-      });
+    this.stop = () => {
+      stopped = true;
+    };
+
+    this.setNextScreen = projection => {
+      previousScreen = currentScreen;
+      currentIndex = (currentIndex + 1) % screens.length;
+      currentScreen = screens[currentIndex];
+      currentScreen.setNewHole(projection);
+      currentScreen.moveTo(-INITIAL_SCREEN_DISTANCE);
     };
 
     this.setNewHole = projection => {
@@ -43,6 +38,8 @@ class ScreenManager {
     };
 
     this.checkFit = projection => currentScreen.checkFit(projection);
+
+    this.isAtFigure = () => currentScreen.isAtFigure();
 
     this.reset = () => {
       screens.forEach(screen => {
@@ -62,7 +59,7 @@ class ScreenManager {
       if (previousScreen) {
         previousScreen.update();
 
-        if (previousScreen.mesh.position.z > CAMERA_DISTANCE) {
+        if (previousScreen.isOffCamera()) {
           previousScreen = null;
         }
       }

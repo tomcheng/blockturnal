@@ -1,5 +1,11 @@
 import { Shape, Path, ExtrudeGeometry, Mesh, Vector2 } from "three";
-import { SCREEN_SIZE, MATERIAL, INITIAL_RATE, ZOOM_RATE } from "./constants";
+import {
+  SCREEN_SIZE,
+  MATERIAL,
+  INITIAL_RATE,
+  ZOOM_RATE,
+  CAMERA_DISTANCE
+} from "./constants";
 import { getOutline } from "./shapes";
 import { isEquivalent } from "./projections";
 
@@ -8,8 +14,7 @@ const extrudeSettings = { amount: 1, bevelEnabled: false };
 class Screen {
   constructor() {
     let projection;
-    let zoomCallback = null;
-    let distanceToZoom = null;
+    let isZooming = false;
     const shape = new Shape([
       new Vector2(-0.5 * SCREEN_SIZE, 0.5 * SCREEN_SIZE),
       new Vector2(-0.5 * SCREEN_SIZE, -0.5 * SCREEN_SIZE),
@@ -28,14 +33,11 @@ class Screen {
     };
 
     this.zoom = () => {
-      distanceToZoom = -mesh.position.z;
-
-      return new Promise(resolve => {
-        zoomCallback = resolve;
-      });
+      isZooming = true;
     };
 
     this.setNewHole = p => {
+      isZooming = false;
       projection = p;
       const outline = getOutline(projection);
       const hole = new Path(outline);
@@ -46,19 +48,24 @@ class Screen {
     this.checkFit = figureProjection =>
       isEquivalent(figureProjection, projection);
 
+    this.isAtFigure = () =>
+      isZooming
+        ? mesh.position.z + ZOOM_RATE >= 0
+        : mesh.position.z + INITIAL_RATE >= 0;
+
+    this.isOffCamera = () => mesh.position.z > CAMERA_DISTANCE;
+
     this.update = () => {
-      if (distanceToZoom) {
+      if (mesh.position.z >= 0) {
+        isZooming = false;
+      }
+
+      if (isZooming) {
         mesh.translateZ(ZOOM_RATE);
-        distanceToZoom -= ZOOM_RATE;
-        if (distanceToZoom - ZOOM_RATE <= 0) {
-          distanceToZoom = null;
-          zoomCallback();
-          zoomCallback = null;
-        }
       } else {
         mesh.translateZ(INITIAL_RATE);
       }
-    }
+    };
   }
 }
 
