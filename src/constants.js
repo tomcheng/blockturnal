@@ -14,3 +14,5 @@ export const MATERIAL = new MeshBasicMaterial({
   color: 0xff7f50,
   wireframe: true
 });
+
+export const INITIAL_RATE = 10;

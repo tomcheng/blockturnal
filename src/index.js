@@ -49,6 +49,7 @@ const animate = () => {
   requestAnimationFrame(animate);
   figure.update();
   camera.update();
+  screen.update();
   renderer.render(scene, camera.camera);
 };
 

@@ -1,5 +1,5 @@
 import { Shape, Path, ExtrudeGeometry, Mesh, Vector2 } from "three";
-import { SCREEN_SIZE, MATERIAL, INITIAL_SCREEN_DISTANCE } from "./constants";
+import { SCREEN_SIZE, MATERIAL, INITIAL_SCREEN_DISTANCE, INITIAL_RATE } from "./constants";
 import { getOutline } from "./shapes";
 import { isEquivalent } from "./projections";
 
@@ -32,6 +32,10 @@ class Screen {
 
     this.checkFit = figureProjection =>
       isEquivalent(figureProjection, projection);
+
+    this.update = () => {
+      mesh.translateZ(INITIAL_RATE);
+    }
   }
 }
 
