@@ -6,7 +6,7 @@ import {
   BoxBufferGeometry,
   Vector3
 } from "three";
-import { UNIT_SIZE, MATERIAL, ROTATION_DECAY } from "./constants";
+import { UNIT_SIZE, MATERIAL, LOSER_MATERIAL, ROTATION_DECAY } from "./constants";
 import { rotate } from "./rotations";
 import { getDimensions } from "./measurements";
 import { getProjection, getRandomProjection } from "./projections";
@@ -28,12 +28,16 @@ class Figure {
 
     desiredRotation.setFromEuler(new Euler(0, 0, 0));
 
-    unitCoordinates.forEach(c => {
+    let cubes = unitCoordinates.map(c => {
       const cube = new Mesh(unit, MATERIAL);
       cube.position.set(c.x * UNIT_SIZE, c.y * UNIT_SIZE, c.z * UNIT_SIZE);
       cube.translateX(-0.5 * width - x);
       cube.translateY(-0.5 * height - y);
       cube.translateZ(-0.5 * depth - z);
+      return cube;
+    });
+
+    cubes.forEach(cube => {
       mesh.add(cube);
     });
 
@@ -52,6 +56,18 @@ class Figure {
 
     this.getRandomProjection = () => {
       return getRandomProjection(unitCoordinates);
+    };
+
+    this.turnRed = () => {
+      cubes.forEach(cube => {
+        cube.material = LOSER_MATERIAL;
+      });
+    };
+
+    this.reset = () => {
+      cubes.forEach(cube => {
+        cube.material = MATERIAL;
+      });
     };
 
     this.update = () => {

@@ -14,6 +14,10 @@ export const MATERIAL = new MeshBasicMaterial({
   color: 0xff7f50,
   wireframe: true
 });
+export const LOSER_MATERIAL = new MeshBasicMaterial({
+  color: 0xff0000,
+  wireframe: true
+});
 
 export const INITIAL_RATE = 10;
 export const ZOOM_RATE = 400;

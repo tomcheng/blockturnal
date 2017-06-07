@@ -10,36 +10,61 @@ const camera = new Camera();
 const figure = new Figure();
 const screenManager = new ScreenManager();
 
+let ended = false;
+
 const handleKeyDown = evt => {
   switch (evt.code) {
     case "ArrowDown":
       evt.preventDefault();
-      figure.rotate("down");
+      if (!ended) {
+        figure.rotate("down");
+      }
       break;
     case "ArrowUp":
       evt.preventDefault();
-      figure.rotate("up");
+      if (!ended) {
+        figure.rotate("up");
+      }
       break;
     case "ArrowLeft":
       evt.preventDefault();
-      figure.rotate("left");
+      if (!ended) {
+        figure.rotate("left");
+      }
       break;
     case "ArrowRight":
       evt.preventDefault();
-      figure.rotate("right");
+      if (!ended) {
+        figure.rotate("right");
+      }
       break;
     case "KeyQ":
-      camera.togglePosition();
+      if (!ended) {
+        camera.togglePosition();
+      }
       break;
     case "Space":
       evt.preventDefault();
-      const screen = screenManager.getCurrentScreen();
 
-      if (screen.checkFit(figure.getCurrentProjection())) {
-        screenManager.zoom().then(() => screenManager.setNewHole(figure.getRandomProjection()));
-        console.log("winner!");
+      if (ended) {
+        figure.reset();
+        screenManager.reset();
+        screenManager.setNewHole(figure.getRandomProjection());
+        ended = false;
+        return;
+      }
+
+      if (
+        screenManager.checkFit(figure.getCurrentProjection())
+      ) {
+        screenManager
+          .zoom()
+          .then(() => screenManager.setNewHole(figure.getRandomProjection()));
       } else {
-        console.log("loser!");
+        screenManager.zoomAndStop().then(() => {
+          figure.turnRed();
+          ended = true;
+        });
       }
 
       break;

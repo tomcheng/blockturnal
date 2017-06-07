@@ -27,8 +27,8 @@ class Screen {
       mesh.position.set(0, 0, distance);
     };
 
-    this.zoom = distance => {
-      distanceToZoom = distance;
+    this.zoom = () => {
+      distanceToZoom = -mesh.position.z;
 
       return new Promise(resolve => {
         zoomCallback = resolve;
@@ -50,7 +50,7 @@ class Screen {
       if (distanceToZoom) {
         mesh.translateZ(ZOOM_RATE);
         distanceToZoom -= ZOOM_RATE;
-        if (distanceToZoom <= 0) {
+        if (distanceToZoom - ZOOM_RATE <= 0) {
           distanceToZoom = null;
           zoomCallback();
           zoomCallback = null;
