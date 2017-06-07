@@ -19,7 +19,7 @@ class Screen {
     this.getNewHole = () => {
       const projection = getRandomProjection(figure.unitCoordinates);
       const outline = getOutline(projection);
-      const hole = new Path(outline.map(c => new Vector2(...c)));
+      const hole = new Path(outline);
       shape.holes = [hole];
       mesh.geometry = new ExtrudeGeometry(shape, extrudeSettings);
     };

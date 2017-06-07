@@ -1,24 +1,25 @@
+import { Vector2 } from "three";
 import uniqWith from "lodash/uniqWith";
 import isEqual from "lodash/isEqual";
 import random from "lodash/random";
 
 const MAPPINGS = {
-  x: coor => [coor.y, coor.z],
-  y: coor => [coor.x, coor.z],
-  z: coor => [coor.x, coor.y]
+  x: c => new Vector2(c.y, c.z),
+  y: c => new Vector2(c.x, c.z),
+  z: c => new Vector2(c.x, c.y)
 };
 
 const flipProjection = flipOrNot => coordinates =>
-  flipOrNot ? coordinates.map(coor => [-coor[0], coor[1]]) : coordinates;
+  flipOrNot ? coordinates.map(c => new Vector2(-c.x, c.y)) : coordinates;
 
 const rotateProjection = angle => coordinates => {
   switch (angle) {
     case 90:
-      return coordinates.map(coor => [-coor[1], coor[0]]);
+      return coordinates.map(c => new Vector2(-c.y, c.x));
     case 180:
-      return coordinates.map(coor => [-coor[0], -coor[1]]);
+      return coordinates.map(c => new Vector2(-c.x, -c.y));
     case 270:
-      return coordinates.map(coor => [coor[1], -coor[0]]);
+      return coordinates.map(c => new Vector2(c.y, -c.x));
     default:
       return coordinates;
   }

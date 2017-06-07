@@ -1,86 +1,101 @@
+import { Vector2 } from "three";
 import { UNIT_SIZE } from "./constants";
 
 const center = vertices => {
-  let xMin = null,
-    xMax = null,
-    yMin = null,
-    yMax = null;
+  let xMin = null, xMax = null, yMin = null, yMax = null;
 
   vertices.forEach(vertex => {
-    if (xMin === null || vertex[0] < xMin) {
-      xMin = vertex[0];
+    if (xMin === null || vertex.x < xMin) {
+      xMin = vertex.x;
     }
-    if (yMin === null || vertex[1] < yMin) {
-      yMin = vertex[1];
+    if (yMin === null || vertex.y < yMin) {
+      yMin = vertex.y;
     }
-    if (xMax === null || vertex[0] > xMax) {
-      xMax = vertex[0];
+    if (xMax === null || vertex.x > xMax) {
+      xMax = vertex.x;
     }
-    if (yMax === null || vertex[1] > yMax) {
-      yMax = vertex[1];
+    if (yMax === null || vertex.y > yMax) {
+      yMax = vertex.y;
     }
   });
 
   const xOffset = -xMin - 0.5 * (xMax - xMin);
   const yOffset = -yMin - 0.5 * (yMax - yMin);
 
-  return vertices.map(vertex => [vertex[0] + xOffset, vertex[1] + yOffset]);
+  return vertices.map(vertex => new Vector2(vertex.x + xOffset, vertex.y + yOffset));
 };
 
 export const getOutline = coordinates => {
   const vertices = [];
 
-  const hasCoordinates = (x, y) =>
-    coordinates.some(coor => coor[0] === x && coor[1] === y);
+  const hasCoordinates = coor =>
+    coordinates.some(c => c.x === coor.x && c.y === coor.y);
 
   const getRight = () => {
-    const [x, y] = currentPosition;
     switch (currentDirection) {
       case "right":
-        return [x + 1, y - 1];
+        return new Vector2(currentPosition.x + 1, currentPosition.y - 1);
       case "up":
-        return [x + 1, y + 1];
+        return new Vector2(currentPosition.x + 1, currentPosition.y + 1);
       case "left":
-        return [x - 1, y + 1];
+        return new Vector2(currentPosition.x - 1, currentPosition.y + 1);
       case "down":
-        return [x - 1, y - 1];
+        return new Vector2(currentPosition.x - 1, currentPosition.y - 1);
     }
   };
 
   const getStraight = () => {
-    const [x, y] = currentPosition;
     switch (currentDirection) {
       case "right":
-        return [x + 1, y];
+        return new Vector2(currentPosition.x + 1, currentPosition.y);
       case "up":
-        return [x, y + 1];
+        return new Vector2(currentPosition.x, currentPosition.y + 1);
       case "left":
-        return [x - 1, y];
+        return new Vector2(currentPosition.x - 1, currentPosition.y);
       case "down":
-        return [x, y - 1];
+        return new Vector2(currentPosition.x, currentPosition.y - 1);
     }
   };
 
   const turnRight = () => {
-    const [x, y] = currentPosition;
     switch (currentDirection) {
       case "right":
-        vertices.push([(x + 1) * UNIT_SIZE, y * UNIT_SIZE]);
+        vertices.push(
+          new Vector2(
+            (currentPosition.x + 1) * UNIT_SIZE,
+            currentPosition.y * UNIT_SIZE
+          )
+        );
         currentPosition = getRight();
         currentDirection = "down";
         break;
       case "up":
-        vertices.push([(x + 1) * UNIT_SIZE, (y + 1) * UNIT_SIZE]);
+        vertices.push(
+          new Vector2(
+            (currentPosition.x + 1) * UNIT_SIZE,
+            (currentPosition.y + 1) * UNIT_SIZE
+          )
+        );
         currentPosition = getRight();
         currentDirection = "right";
         break;
       case "left":
-        vertices.push([x * UNIT_SIZE, (y + 1) * UNIT_SIZE]);
+        vertices.push(
+          new Vector2(
+            currentPosition.x * UNIT_SIZE,
+            (currentPosition.y + 1) * UNIT_SIZE
+          )
+        );
         currentPosition = getRight();
         currentDirection = "up";
         break;
       case "down":
-        vertices.push([x * UNIT_SIZE, y * UNIT_SIZE]);
+        vertices.push(
+          new Vector2(
+            currentPosition.x * UNIT_SIZE,
+            currentPosition.y * UNIT_SIZE
+          )
+        );
         currentPosition = getRight();
         currentDirection = "left";
         break;
@@ -105,22 +120,41 @@ export const getOutline = coordinates => {
   };
 
   const turnLeft = () => {
-    const [x, y] = currentPosition;
     switch (currentDirection) {
       case "right":
-        vertices.push([(x + 1) * UNIT_SIZE, y * UNIT_SIZE]);
+        vertices.push(
+          new Vector2(
+            (currentPosition.x + 1) * UNIT_SIZE,
+            currentPosition.y * UNIT_SIZE
+          )
+        );
         currentDirection = "up";
         break;
       case "up":
-        vertices.push([(x + 1) * UNIT_SIZE, (y + 1) * UNIT_SIZE]);
+        vertices.push(
+          new Vector2(
+            (currentPosition.x + 1) * UNIT_SIZE,
+            (currentPosition.y + 1) * UNIT_SIZE
+          )
+        );
         currentDirection = "left";
         break;
       case "left":
-        vertices.push([x * UNIT_SIZE, (y + 1) * UNIT_SIZE]);
+        vertices.push(
+          new Vector2(
+            currentPosition.x * UNIT_SIZE,
+            (currentPosition.y + 1) * UNIT_SIZE
+          )
+        );
         currentDirection = "down";
         break;
       case "down":
-        vertices.push([x * UNIT_SIZE, y * UNIT_SIZE]);
+        vertices.push(
+          new Vector2(
+            currentPosition.x * UNIT_SIZE,
+            currentPosition.y * UNIT_SIZE
+          )
+        );
         currentDirection = "right";
         break;
     }
@@ -129,19 +163,19 @@ export const getOutline = coordinates => {
   const getStart = () => {
     let start = null;
 
-    coordinates.forEach(coor => {
+    coordinates.forEach(c => {
       if (!start) {
-        start = coor;
+        start = c;
         return;
       }
 
-      if (coor[1] < start[1]) {
-        start = coor;
+      if (c.y < start.y) {
+        start = c;
         return;
       }
 
-      if (coor[1] === start[1] && coor[0] < start[0]) {
-        start = coor;
+      if (c.y === start.y && c.x < start.x) {
+        start = c;
       }
     });
 
@@ -152,19 +186,19 @@ export const getOutline = coordinates => {
   let currentPosition = start;
   let currentDirection = "right";
 
-  vertices.push([start[0] * UNIT_SIZE, start[1] * UNIT_SIZE]);
+  vertices.push(new Vector2(start.x * UNIT_SIZE, start.y * UNIT_SIZE));
 
   do {
-    if (hasCoordinates(...getRight())) {
+    if (hasCoordinates(getRight())) {
       turnRight();
-    } else if (hasCoordinates(...getStraight())) {
+    } else if (hasCoordinates(getStraight())) {
       goStraight();
     } else {
       turnLeft();
     }
   } while (
-    currentPosition[0] !== start[0] ||
-    currentPosition[1] !== start[1] ||
+    currentPosition.x !== start.x ||
+    currentPosition.y !== start.y ||
     currentDirection !== "down"
   );
 

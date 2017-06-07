@@ -1,4 +1,4 @@
-import { Vector3 } from "three";
+import { Vector3, Vector2 } from "three";
 import { getProjection } from "../src/projections";
 
 const coordinates = [
@@ -10,13 +10,16 @@ const coordinates = [
 
 it("Gets projection for z-axis", () => {
   expect(getProjection({ axis: "z", coordinates })).toEqual([
-    [0, 0],
-    [-1, 0],
-    [-1, 1],
-    [1, 0]
+    new Vector2(0, 0),
+    new Vector2(-1, 0),
+    new Vector2(-1, 1),
+    new Vector2(1, 0)
   ]);
 });
 
 it("Gets projection for x-axis", () => {
-  expect(getProjection({ axis: "x", coordinates })).toEqual([[0, 0], [1, 0]]);
+  expect(getProjection({ axis: "x", coordinates })).toEqual([
+    new Vector2(0, 0),
+    new Vector2(1, 0)
+  ]);
 });
