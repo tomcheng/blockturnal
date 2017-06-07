@@ -1,8 +1,9 @@
+import { Vector3 } from "three";
 import { getDimensions } from "../src/measurements";
 import { UNIT_SIZE } from "../src/constants";
 
 it("Gets the dimensions for a unit cube", () => {
-  expect(getDimensions([[0, 0, 0]])).toEqual({
+  expect(getDimensions([new Vector3(0, 0, 0)])).toEqual({
     width: UNIT_SIZE,
     height: UNIT_SIZE,
     depth: UNIT_SIZE,
