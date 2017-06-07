@@ -15,6 +15,7 @@ import {
 import { rotate } from "./rotations";
 import { getDimensions } from "./measurements";
 import { getProjection, getRandomProjection } from "./projections";
+import { addRandomUnit } from "./addUnit";
 
 const unit = new BoxBufferGeometry(UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
 
@@ -86,7 +87,7 @@ class Figure {
     };
 
     this.addBlocks = () => {
-      unitCoordinates.push(new Vector3(2, 0, 0));
+      addRandomUnit(unitCoordinates);
       generateCubesAndMesh();
     };
 
