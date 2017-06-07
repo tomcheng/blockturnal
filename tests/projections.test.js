@@ -1,5 +1,5 @@
 import { Vector3, Vector2 } from "three";
-import { getProjection } from "../src/projections";
+import { getProjection, isEquivalent } from "../src/projections";
 
 const coordinates = [
   new Vector3(0, 0, 0),
@@ -22,4 +22,36 @@ it("Gets projection for x-axis", () => {
     new Vector2(0, 0),
     new Vector2(1, 0)
   ]);
+});
+
+it("Marks equal projections as equivalent", () => {
+  expect(isEquivalent([new Vector2(0, 0)], [new Vector2(0, 0)])).toBe(true);
+});
+
+it("Marks unequal projections as different", () => {
+  expect(
+    isEquivalent([new Vector2(0, 0)], [new Vector2(0, 0), new Vector2(1, 0)])
+  ).toBe(false);
+});
+
+it("Marks translations as equivalent", () => {
+  expect(isEquivalent([new Vector2(0, 0)], [new Vector2(1, 0)])).toBe(true);
+});
+
+it("Marks different shapes as different", () => {
+  expect(
+    isEquivalent(
+      [new Vector2(0, 0), new Vector2(0, 1)],
+      [new Vector2(0, 0), new Vector2(1, 0)]
+    )
+  ).toBe(false);
+});
+
+it("Ignores coordinates that have different order", () => {
+  expect(
+    isEquivalent(
+      [new Vector2(0, 0), new Vector2(0, 1)],
+      [new Vector2(0, 1), new Vector2(0, 0)]
+    )
+  ).toBe(true);
 });

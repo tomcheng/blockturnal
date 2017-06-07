@@ -18,7 +18,9 @@ class Figure {
     const unitCoordinates = [
       new Vector3(-1, 0, 0),
       new Vector3(0, 0, 0),
-      new Vector3(1, 0, 0)
+      new Vector3(1, 0, 0),
+      new Vector3(1, 1, 0),
+      new Vector3(0, 0, 1)
     ];
     const mesh = new Group();
     const desiredRotation = new Quaternion();
@@ -28,11 +30,7 @@ class Figure {
 
     unitCoordinates.forEach(c => {
       const cube = new Mesh(unit, MATERIAL);
-      cube.position.set(
-        c.x * UNIT_SIZE,
-        c.y * UNIT_SIZE,
-        c.z * UNIT_SIZE
-      );
+      cube.position.set(c.x * UNIT_SIZE, c.y * UNIT_SIZE, c.z * UNIT_SIZE);
       cube.translateX(-0.5 * width - x);
       cube.translateY(-0.5 * height - y);
       cube.translateZ(-0.5 * depth - z);

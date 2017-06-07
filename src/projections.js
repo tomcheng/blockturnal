@@ -2,6 +2,7 @@ import { Vector2 } from "three";
 import uniqWith from "lodash/uniqWith";
 import isEqual from "lodash/isEqual";
 import random from "lodash/random";
+import sortBy from "lodash/sortBy";
 
 const MAPPINGS = {
   x: c => new Vector2(c.y, c.z),
@@ -36,4 +37,33 @@ export const getRandomProjection = coordinates => {
   return rotateProjection(rotation)(
     flipProjection(flip)(getProjection({ axis, coordinates }))
   );
+};
+
+const normalize = projection => {
+  let xMin = null, yMin = null;
+
+  projection.forEach(c => {
+    if (xMin === null || c.x < xMin) {
+      xMin = c.x;
+    }
+    if (yMin === null || c.y < yMin) {
+      yMin = c.y;
+    }
+  });
+
+  return sortBy(projection.map(c => new Vector2(c.x - xMin, c.y - yMin)), [
+    "x",
+    "y"
+  ]);
+};
+
+export const isEquivalent = (p1, p2) => {
+  if (p1.length !== p2.length) {
+    return false;
+  }
+
+  const normalP1 = normalize(p1);
+  const normalP2 = normalize(p2);
+
+  return normalP1.every((c, i) => c.equals(normalP2[i]));
 };

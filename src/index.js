@@ -33,6 +33,11 @@ const handleKeyDown = evt => {
       break;
     case "Space":
       evt.preventDefault();
+      if (screen.checkFit(figure.getCurrentProjection())) {
+        console.log("winner!");
+      } else {
+        console.log("loser!");
+      }
       screen.newHole(figure.getRandomProjection());
       break;
     default:
