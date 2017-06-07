@@ -41,7 +41,7 @@ class Figure {
 
     this.mesh = mesh;
 
-    this.coordinates = unitCoordinates;
+    this.unitCoordinates = unitCoordinates;
 
     this.rotate = direction => {
       rotate(direction, desiredRotation);

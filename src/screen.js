@@ -6,7 +6,7 @@ import { getOutline } from "./shapes";
 const extrudeSettings = { amount: 1, bevelEnabled: false };
 
 class Screen {
-  constructor(coordinates) {
+  constructor(figure) {
     const shape = new Shape([
       new Vector2(-0.5 * SCREEN_SIZE, 0.5 * SCREEN_SIZE),
       new Vector2(-0.5 * SCREEN_SIZE, -0.5 * SCREEN_SIZE),
@@ -17,9 +17,9 @@ class Screen {
     mesh.position.set(0, 0, -INITIAL_SCREEN_DISTANCE);
 
     this.getNewHole = () => {
-      const projection = getRandomProjection(coordinates);
+      const projection = getRandomProjection(figure.unitCoordinates);
       const outline = getOutline(projection);
-      const hole = new Path(outline.map(coor => new Vector2(...coor)));
+      const hole = new Path(outline.map(c => new Vector2(...c)));
       shape.holes = [hole];
       mesh.geometry = new ExtrudeGeometry(shape, extrudeSettings);
     };
