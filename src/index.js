@@ -1,14 +1,14 @@
 import { Scene, WebGLRenderer } from "three";
 import Camera from "./camera";
 import Figure from "./figure";
-import Screen from "./screen";
+import ScreenManager from "./screenManager";
 
 const scene = new Scene();
 const renderer = new WebGLRenderer();
 
 const camera = new Camera();
 const figure = new Figure();
-const screen = new Screen();
+const screenManager = new ScreenManager();
 
 const handleKeyDown = evt => {
   switch (evt.code) {
@@ -33,11 +33,14 @@ const handleKeyDown = evt => {
       break;
     case "Space":
       evt.preventDefault();
+      const screen = screenManager.getCurrentScreen();
+
       if (screen.checkFit(figure.getCurrentProjection())) {
         console.log("winner!");
       } else {
         console.log("loser!");
       }
+
       screen.newHole(figure.getRandomProjection());
       break;
     default:
@@ -49,12 +52,14 @@ const animate = () => {
   requestAnimationFrame(animate);
   figure.update();
   camera.update();
-  screen.update();
+  screenManager.update();
   renderer.render(scene, camera.camera);
 };
 
 (() => {
   window.addEventListener("keydown", handleKeyDown);
+
+  const screen = screenManager.getCurrentScreen();
 
   screen.newHole(figure.getRandomProjection());
 
