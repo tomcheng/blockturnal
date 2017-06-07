@@ -41,6 +41,8 @@ class ScreenManager {
 
     this.isAtFigure = () => currentScreen.isAtFigure();
 
+    this.isPastFigure = () => currentScreen.isPastFigure();
+
     this.reset = () => {
       screens.forEach(screen => {
         screen.moveTo(-10 * INITIAL_SCREEN_DISTANCE);

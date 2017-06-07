@@ -29,22 +29,32 @@ class Figure {
     ];
     const mesh = new Group();
     const desiredRotation = new Quaternion();
-    const { width, height, depth, x, y, z } = getDimensions(unitCoordinates);
+    let cubes = [];
 
     desiredRotation.setFromEuler(new Euler(0, 0, 0));
 
-    let cubes = unitCoordinates.map(c => {
-      const cube = new Mesh(unit, MATERIAL);
-      cube.position.set(c.x * UNIT_SIZE, c.y * UNIT_SIZE, c.z * UNIT_SIZE);
-      cube.translateX(-0.5 * width - x);
-      cube.translateY(-0.5 * height - y);
-      cube.translateZ(-0.5 * depth - z);
-      return cube;
-    });
+    const generateCubesAndMesh = () => {
+      cubes.forEach(cube => {
+        mesh.remove(cube);
+      });
 
-    cubes.forEach(cube => {
-      mesh.add(cube);
-    });
+      const { width, height, depth, x, y, z } = getDimensions(unitCoordinates);
+
+      cubes = unitCoordinates.map(c => {
+        const cube = new Mesh(unit, MATERIAL);
+        cube.position.set(c.x * UNIT_SIZE, c.y * UNIT_SIZE, c.z * UNIT_SIZE);
+        cube.translateX(-0.5 * width - x);
+        cube.translateY(-0.5 * height - y);
+        cube.translateZ(-0.5 * depth - z);
+        return cube;
+      });
+
+      cubes.forEach(cube => {
+        mesh.add(cube);
+      });
+    };
+
+    generateCubesAndMesh();
 
     this.mesh = mesh;
 
@@ -73,6 +83,11 @@ class Figure {
       cubes.forEach(cube => {
         cube.material = MATERIAL;
       });
+    };
+
+    this.addBlocks = () => {
+      unitCoordinates.push(new Vector3(2, 0, 0));
+      generateCubesAndMesh();
     };
 
     this.update = () => {

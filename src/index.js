@@ -51,15 +51,21 @@ const handleKeyDown = evt => {
 
 const animate = () => {
   requestAnimationFrame(animate);
-  if (screenManager.isAtFigure()) {
-    if (screenManager.checkFit(figure.getCurrentProjection())) {
-      screenManager.setNextScreen(figure.getRandomProjection());
-    } else {
-      figure.turnRed();
-      screenManager.stop();
-      ended = true;
-    }
+
+  if (
+    screenManager.isAtFigure() &&
+    !screenManager.checkFit(figure.getCurrentProjection())
+  ) {
+    figure.turnRed();
+    screenManager.stop();
+    ended = true;
   }
+
+  if (screenManager.isPastFigure()) {
+    figure.addBlocks();
+    screenManager.setNextScreen(figure.getRandomProjection());
+  }
+
   figure.update();
   camera.update();
   screenManager.update();

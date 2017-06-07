@@ -53,6 +53,8 @@ class Screen {
         ? mesh.position.z + ZOOM_RATE >= 0
         : mesh.position.z + INITIAL_RATE >= 0;
 
+    this.isPastFigure = () => mesh.position.z > 0;
+
     this.isOffCamera = () => mesh.position.z > CAMERA_DISTANCE;
 
     this.update = () => {
