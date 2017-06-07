@@ -36,12 +36,12 @@ const handleKeyDown = evt => {
       const screen = screenManager.getCurrentScreen();
 
       if (screen.checkFit(figure.getCurrentProjection())) {
+        screenManager.zoom().then(() => screenManager.setNewHole(figure.getRandomProjection()));
         console.log("winner!");
       } else {
         console.log("loser!");
       }
 
-      screen.newHole(figure.getRandomProjection());
       break;
     default:
       break;
@@ -59,12 +59,12 @@ const animate = () => {
 (() => {
   window.addEventListener("keydown", handleKeyDown);
 
-  const screen = screenManager.getCurrentScreen();
-
-  screen.newHole(figure.getRandomProjection());
+  screenManager.setNewHole(figure.getRandomProjection());
 
   scene.add(figure.mesh);
-  scene.add(screen.mesh);
+  screenManager.getScreens().forEach(s => {
+    scene.add(s.mesh);
+  });
 
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

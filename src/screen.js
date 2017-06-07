@@ -1,5 +1,5 @@
 import { Shape, Path, ExtrudeGeometry, Mesh, Vector2 } from "three";
-import { SCREEN_SIZE, MATERIAL, INITIAL_SCREEN_DISTANCE, INITIAL_RATE } from "./constants";
+import { SCREEN_SIZE, MATERIAL, INITIAL_RATE, ZOOM_RATE } from "./constants";
 import { getOutline } from "./shapes";
 import { isEquivalent } from "./projections";
 
@@ -8,6 +8,8 @@ const extrudeSettings = { amount: 1, bevelEnabled: false };
 class Screen {
   constructor() {
     let projection;
+    let zoomCallback = null;
+    let distanceToZoom = null;
     const shape = new Shape([
       new Vector2(-0.5 * SCREEN_SIZE, 0.5 * SCREEN_SIZE),
       new Vector2(-0.5 * SCREEN_SIZE, -0.5 * SCREEN_SIZE),
@@ -18,11 +20,22 @@ class Screen {
       new ExtrudeGeometry(shape, extrudeSettings),
       MATERIAL
     );
-    mesh.position.set(0, 0, -INITIAL_SCREEN_DISTANCE);
 
     this.mesh = mesh;
 
-    this.newHole = p => {
+    this.moveTo = distance => {
+      mesh.position.set(0, 0, distance);
+    };
+
+    this.zoom = distance => {
+      distanceToZoom = distance;
+
+      return new Promise(resolve => {
+        zoomCallback = resolve;
+      });
+    };
+
+    this.setNewHole = p => {
       projection = p;
       const outline = getOutline(projection);
       const hole = new Path(outline);
@@ -34,7 +47,17 @@ class Screen {
       isEquivalent(figureProjection, projection);
 
     this.update = () => {
-      mesh.translateZ(INITIAL_RATE);
+      if (distanceToZoom) {
+        mesh.translateZ(ZOOM_RATE);
+        distanceToZoom -= ZOOM_RATE;
+        if (distanceToZoom <= 0) {
+          distanceToZoom = null;
+          zoomCallback();
+          zoomCallback = null;
+        }
+      } else {
+        mesh.translateZ(INITIAL_RATE);
+      }
     }
   }
 }

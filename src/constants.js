@@ -16,3 +16,4 @@ export const MATERIAL = new MeshBasicMaterial({
 });
 
 export const INITIAL_RATE = 10;
+export const ZOOM_RATE = 400;
