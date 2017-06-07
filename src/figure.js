@@ -1,16 +1,10 @@
-import {
-  Group,
-  Quaternion,
-  Euler,
-  Mesh,
-  BoxBufferGeometry,
-  Vector3
-} from "three";
+import { Group, Quaternion, Euler, Mesh, BoxBufferGeometry } from "three";
 import {
   UNIT_SIZE,
   MATERIAL,
   LOSER_MATERIAL,
-  ROTATION_DECAY
+  ROTATION_DECAY,
+  INITIAL_FIGURE
 } from "./constants";
 import { rotate } from "./rotations";
 import { getDimensions } from "./measurements";
@@ -21,16 +15,10 @@ const unit = new BoxBufferGeometry(UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
 
 class Figure {
   constructor() {
-    const unitCoordinates = [
-      new Vector3(-1, 0, 0),
-      new Vector3(0, 0, 0),
-      new Vector3(1, 0, 0),
-      new Vector3(1, 1, 0),
-      new Vector3(0, 0, 1)
-    ];
+    let unitCoordinates = [].concat(INITIAL_FIGURE);
+    let cubes = [];
     const mesh = new Group();
     const desiredRotation = new Quaternion();
-    let cubes = [];
 
     desiredRotation.setFromEuler(new Euler(0, 0, 0));
 
@@ -81,9 +69,8 @@ class Figure {
     };
 
     this.reset = () => {
-      cubes.forEach(cube => {
-        cube.material = MATERIAL;
-      });
+      unitCoordinates = [].concat(INITIAL_FIGURE);
+      generateCubesAndMesh();
     };
 
     this.addBlocks = () => {
