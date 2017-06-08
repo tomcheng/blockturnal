@@ -83,8 +83,17 @@ const animate = () => {
 (() => {
   window.addEventListener("keydown", handleKeyDown);
 
-  scene.background = new T.Color(0xd1edfa);
-  scene.fog = new T.Fog(0xd1edfa, 1, 1.3 * INITIAL_SCREEN_DISTANCE);
+  renderer.gammaInput = true;
+  renderer.gammeOutput = true;
+
+  scene.background = new T.Color(0x8bd9f2);
+  scene.fog = new T.Fog(0x8bd9f2, 1, 1.5 * INITIAL_SCREEN_DISTANCE);
+
+  scene.add(new T.AmbientLight(0x404040));
+
+  const light = new T.DirectionalLight();
+  light.position.set(-3, 5, 7);
+  scene.add(light);
 
   screenManager.setNewHole(figure.getRandomProjection());
   screenManager.getScreens().forEach(s => {
