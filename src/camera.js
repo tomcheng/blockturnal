@@ -19,6 +19,7 @@ class Camera {
     );
 
     camera.translateX(-offset);
+    camera.translateY(0.5 * offset);
     camera.translateZ(CAMERA_DISTANCE);
     camera.lookAt(new Vector3(0, 0, -INITIAL_SCREEN_DISTANCE));
 
@@ -36,6 +37,9 @@ class Camera {
       camera.translateX(
         -CAMERA_POSITION_DECAY *
           (camera.position.x - (desiredPosition === "left" ? -offset : offset))
+      );
+      camera.translateY(
+        -CAMERA_POSITION_DECAY * (camera.position.y - 0.5 * offset)
       );
     };
   }
