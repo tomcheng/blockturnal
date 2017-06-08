@@ -9,7 +9,8 @@ export const CAMERA_POSITION_DECAY = 0.3;
 
 export const ROTATION_DECAY = 0.4;
 
-export const SCREEN_SIZE = 30 * UNIT_SIZE;
+export const SCREEN_WIDTH = 40 * UNIT_SIZE;
+export const SCREEN_HEIGHT = 30 * UNIT_SIZE;
 export const MATERIAL = new T.MeshLambertMaterial({
   color: 0x78aede
 });

@@ -1,6 +1,7 @@
 import { Shape, Path, ExtrudeGeometry, Mesh, Vector2 } from "three";
 import {
-  SCREEN_SIZE,
+  SCREEN_WIDTH,
+  SCREEN_HEIGHT,
   MATERIAL,
   INITIAL_RATE,
   ZOOM_RATE,
@@ -16,10 +17,10 @@ class Screen {
     let projection;
     let isZooming = false;
     const shape = new Shape([
-      new Vector2(-0.5 * SCREEN_SIZE, 0.5 * SCREEN_SIZE),
-      new Vector2(-0.5 * SCREEN_SIZE, -0.5 * SCREEN_SIZE),
-      new Vector2(0.5 * SCREEN_SIZE, -0.5 * SCREEN_SIZE),
-      new Vector2(0.5 * SCREEN_SIZE, 0.5 * SCREEN_SIZE)
+      new Vector2(-0.5 * SCREEN_WIDTH, 0.5 * SCREEN_HEIGHT),
+      new Vector2(-0.5 * SCREEN_WIDTH, -0.5 * SCREEN_HEIGHT),
+      new Vector2(0.5 * SCREEN_WIDTH, -0.5 * SCREEN_HEIGHT),
+      new Vector2(0.5 * SCREEN_WIDTH, 0.5 * SCREEN_HEIGHT)
     ]);
     const mesh = new Mesh(
       new ExtrudeGeometry(shape, extrudeSettings),
