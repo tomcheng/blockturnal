@@ -40,6 +40,12 @@ const handleKeyDown = evt => {
     case "ArrowRight":
       figure.rotate("right");
       break;
+    case "BracketLeft":
+      figure.rotate("counter-clockwise");
+      break;
+    case "BracketRight":
+      figure.rotate("clockwise");
+      break;
     case "KeyQ":
       camera.togglePosition();
       break;
