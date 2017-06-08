@@ -1,19 +1,16 @@
 import { PerspectiveCamera, Vector3 } from "three";
 import {
   INITIAL_SCREEN_DISTANCE,
-  CAMERA_OFFSET,
   CAMERA_POSITION_DECAY,
-  CAMERA_DISTANCE
+  CAMERA_DISTANCE,
+  CAMERA_OFFSET,
+  UNIT_SIZE
 } from "./constants";
-
-const POSITIONS = {
-  left: -CAMERA_OFFSET,
-  right: CAMERA_OFFSET
-};
 
 class Camera {
   constructor() {
     let desiredPosition = "left";
+    let offset = UNIT_SIZE + CAMERA_OFFSET;
     const camera = new PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
@@ -21,7 +18,7 @@ class Camera {
       INITIAL_SCREEN_DISTANCE + CAMERA_DISTANCE + 10
     );
 
-    camera.translateX(POSITIONS[desiredPosition]);
+    camera.translateX(-offset);
     camera.translateZ(CAMERA_DISTANCE);
     camera.lookAt(new Vector3(0, 0, -INITIAL_SCREEN_DISTANCE));
 
@@ -31,10 +28,14 @@ class Camera {
       desiredPosition = desiredPosition === "left" ? "right" : "left";
     };
 
+    this.updateOffset = additionalOffset => {
+      offset = additionalOffset + CAMERA_OFFSET;
+    };
+
     this.update = () => {
       camera.translateX(
         -CAMERA_POSITION_DECAY *
-          (camera.position.x - POSITIONS[desiredPosition])
+          (camera.position.x - (desiredPosition === "left" ? -offset : offset))
       );
     };
   }

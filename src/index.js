@@ -63,6 +63,7 @@ const animate = () => {
 
   if (screenManager.isPastFigure()) {
     figure.addBlocks();
+    camera.updateOffset(0.5 * figure.maxDimension);
     screenManager.setNextScreen(figure.getRandomProjection());
   }
 

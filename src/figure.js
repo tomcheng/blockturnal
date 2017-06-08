@@ -1,4 +1,5 @@
 import { Group, Quaternion, Euler, Mesh, BoxBufferGeometry } from "three";
+import max from "lodash/max";
 import {
   UNIT_SIZE,
   MATERIAL,
@@ -41,6 +42,8 @@ class Figure {
       cubes.forEach(cube => {
         mesh.add(cube);
       });
+
+      this.maxDimension = max([width, height, depth]);
     };
 
     generateCubesAndMesh();
