@@ -3,6 +3,7 @@ import {
   SCREEN_WIDTH,
   SCREEN_HEIGHT,
   MATERIAL,
+  TRANSPARENT_MATERIAL,
   INITIAL_RATE,
   ZOOM_RATE,
   CAMERA_DISTANCE
@@ -31,6 +32,9 @@ class Screen {
 
     this.moveTo = distance => {
       mesh.position.set(0, 0, distance);
+      if (mesh.position.z < 0) {
+        mesh.material = MATERIAL;
+      }
     };
 
     this.zoom = () => {
@@ -61,6 +65,8 @@ class Screen {
     this.update = () => {
       if (mesh.position.z >= 0) {
         isZooming = false;
+        mesh.material = TRANSPARENT_MATERIAL;
+        mesh.material.opacity = 1 - (mesh.position.z / CAMERA_DISTANCE);
       }
 
       if (isZooming) {

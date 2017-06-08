@@ -14,6 +14,11 @@ export const SCREEN_HEIGHT = 30 * UNIT_SIZE;
 export const MATERIAL = new T.MeshLambertMaterial({
   color: 0x78aede
 });
+export const TRANSPARENT_MATERIAL = new T.MeshLambertMaterial({
+  color: 0x78aede,
+  transparent: true,
+  opacity: 0.4
+});
 export const LOSER_MATERIAL = new T.MeshLambertMaterial({
   color: 0xff0000,
 });
