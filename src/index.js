@@ -10,6 +10,7 @@ const restartButtonEl = document.getElementById("restart-button");
 const scoreEl = document.getElementById("score");
 
 let highScore = localStorage.getItem("high-score") || 0;
+let gamePlayed = false;
 
 const handleUpdateScore = score => {
   scoreEl.innerText = score;
@@ -38,13 +39,17 @@ const game = new Game({
 
 const startGame = () => {
   startScreenEl.style.display = "none";
+  game.start();
+  gamePlayed = true;
+};
+
+const restartGame = () => {
   endScreenEl.style.display = "none";
   game.reset();
-  game.start();
 };
 
 startButtonEl.addEventListener("click", startGame);
-restartButtonEl.addEventListener("click", startGame);
+restartButtonEl.addEventListener("click", restartGame);
 
 window.addEventListener(
   "resize",
@@ -87,7 +92,11 @@ window.addEventListener("keydown", evt => {
     }
   } else {
     if (evt.code === "Space") {
-      startGame();
+      if (gamePlayed) {
+        restartGame();
+      } else {
+        startGame();
+      }
     }
   }
 
