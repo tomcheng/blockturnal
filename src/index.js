@@ -8,8 +8,6 @@ const finalScoreEl = document.getElementById("final-score");
 const restartButtonEl = document.getElementById("restart-button");
 const scoreEl = document.getElementById("score");
 
-endScreenEl.style.display = "none";
-
 const handleUpdateScore = score => {
   scoreEl.innerText = score;
 };
@@ -48,7 +46,14 @@ window.addEventListener("keydown", evt => {
     evt.preventDefault();
   }
 
-  game.handleInput(evt.code);
+  if (game.isRunning()) {
+    game.handleInput(evt.code);
+  } else {
+    if (evt.code === "Space") {
+      startGame();
+    }
+  }
+
 });
 
 document.body.appendChild(game.getDomElement());

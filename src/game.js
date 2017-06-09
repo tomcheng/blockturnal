@@ -71,6 +71,8 @@ class Game {
 
   getDomElement = () => renderer.domElement;
 
+  isRunning = () => !!requestId;
+
   reset = () => {
     score = 0;
     this.onUpdateScore(score);
