@@ -59,7 +59,7 @@ window.addEventListener(
 );
 
 window.addEventListener("keydown", evt => {
-  if (["ArrowDown", "ArrowUp", "Space"].includes(evt.code)) {
+  if (["ArrowDown", "ArrowUp", "Space", "Tab"].includes(evt.code)) {
     evt.preventDefault();
   }
 
@@ -84,6 +84,7 @@ window.addEventListener("keydown", evt => {
         game.rotateFigure("clockwise");
         break;
       case "KeyQ":
+      case "Tab":
         game.toggleCamera();
         break;
       case "Space":
