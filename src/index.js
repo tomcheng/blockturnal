@@ -14,20 +14,21 @@ const camera = new Camera();
 const figure = new Figure();
 const screenManager = new ScreenManager();
 
-let ended = false;
+let gameEnded = false;
+let gameRunning = false;
 
 const handleKeyDown = evt => {
   if (["ArrowDown", "ArrowUp", "Space"].includes(evt.code)) {
     evt.preventDefault();
   }
 
-  if (ended) {
+  if (gameEnded) {
     if (evt.code === "Space") {
       figure.reset();
       screenManager.reset();
       environment.resetScore();
       screenManager.setNewHole(figure.getRandomProjection());
-      ended = false;
+      gameEnded = false;
     }
     return;
   }
@@ -67,13 +68,17 @@ const handleResize = debounce(() => {
 const animate = () => {
   requestAnimationFrame(animate);
 
+  if (!gameRunning) {
+    return;
+  }
+
   if (
     screenManager.isAtFigure() &&
     !screenManager.checkFit(figure.getCurrentProjection())
   ) {
     figure.turnRed();
     screenManager.stop();
-    ended = true;
+    gameEnded = true;
   }
 
   if (screenManager.isPastFigure()) {
@@ -92,6 +97,14 @@ const animate = () => {
 (() => {
   window.addEventListener("keydown", handleKeyDown);
   window.addEventListener("resize", handleResize);
+
+  const startScreenEl = document.getElementById("start-screen");
+  const startButtonEl = document.getElementById("start-button");
+
+  startButtonEl.addEventListener("click", () => {
+    startScreenEl.style.display = "none";
+    gameRunning = true;
+  });
 
   renderer.gammaInput = true;
   renderer.gammeOutput = true;
