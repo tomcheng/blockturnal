@@ -19,6 +19,8 @@ class Game {
 
     this.onUpdateScore(0);
 
+    camera.setSize(width, height);
+
     renderer.gammaInput = true;
     renderer.gammeOutput = true;
     renderer.setSize(width, height);
@@ -88,6 +90,7 @@ class Game {
   };
 
   resize = (width, height) => {
+    camera.setSize(width, height);
     renderer.setSize(width, height);
   };
 
