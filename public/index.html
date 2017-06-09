@@ -36,29 +36,72 @@
       right: 0;
       left: 0;
       bottom: 0;
-      text-align: center;
-      background-color: #8bd9f2;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
     }
     #end-screen {
       display: none;
+    }
+    .background {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      background-color: #8bd9f2;
+      transition: opacity 0.8s ease-in-out 0.2s;
+    }
+    .inactive .background {
+      opacity: 0;
+    }
+    .active .background {
+      opacity: 0.8;
+    }
+    .screen-content {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.4s ease-in-out 1.2s;
+    }
+    .inactive .screen-content {
+      opacity: 0;
+    }
+    .active .screen-content {
+      opacity: 1;
+    }
+    .screen-content-button {
+      transition: opacity 0.4s ease-in-out 1.8s;
+    }
+    .inactive .screen-content-button {
+      opacity: 0;
+    }
+    .active .screen-content-button {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
 <div id="score"></div>
 <div id="start-screen">
-  <h1>Oh herro...</h1>
-  <div>
-    <button id="start-button">Start</button>
+  <div class="background"></div>
+  <div class="screen-content">
+    <h1>Oh herro...</h1>
+    <div>
+      <button id="start-button">Start</button>
+    </div>
   </div>
 </div>
 <div id="end-screen">
-  <h1>You lost. Your final score was <span id="final-score"></span>.</h1>
-  <div>
-    <button id="restart-button">Try Again</button>
+  <div class="background"></div>
+  <div class="screen-content">
+    <h1>You lost. Your final score was <span id="final-score"></span>.</h1>
+    <div>
+      <button id="restart-button" class="screen-content-button">Try Again</button>
+    </div>
   </div>
 </div>
 <script src="/bundle.js"></script>

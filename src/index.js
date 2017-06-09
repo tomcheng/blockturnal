@@ -13,8 +13,12 @@ const handleUpdateScore = score => {
 };
 
 const handleEndGame = ({ finalScore }) => {
-  endScreenEl.style.display = "flex";
   finalScoreEl.innerText = finalScore;
+  endScreenEl.style.display = "block";
+  endScreenEl.className = "inactive";
+  requestAnimationFrame(() => {
+    endScreenEl.className = "active";
+  });
 };
 
 const game = new Game({
