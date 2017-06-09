@@ -59,7 +59,32 @@ window.addEventListener("keydown", evt => {
   }
 
   if (game.isRunning()) {
-    game.handleInput(evt.code);
+    switch(evt.code) {
+      case "ArrowDown":
+        game.rotateFigure("down");
+        break;
+      case "ArrowUp":
+        game.rotateFigure("up");
+        break;
+      case "ArrowLeft":
+        game.rotateFigure("left");
+        break;
+      case "ArrowRight":
+        game.rotateFigure("right");
+        break;
+      case "BracketLeft":
+        game.rotateFigure("counter-clockwise");
+        break;
+      case "BracketRight":
+        game.rotateFigure("clockwise");
+        break;
+      case "KeyQ":
+        game.toggleCamera();
+        break;
+      case "Space":
+        game.zoom();
+        break;
+    }
   } else {
     if (evt.code === "Space") {
       startGame();

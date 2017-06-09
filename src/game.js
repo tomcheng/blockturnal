@@ -94,34 +94,17 @@ class Game {
     renderer.setSize(width, height);
   };
 
-  handleInput = code => {
-    switch (code) {
-      case "ArrowDown":
-        figure.rotate("down");
-        break;
-      case "ArrowUp":
-        figure.rotate("up");
-        break;
-      case "ArrowLeft":
-        figure.rotate("left");
-        break;
-      case "ArrowRight":
-        figure.rotate("right");
-        break;
-      case "BracketLeft":
-        figure.rotate("counter-clockwise");
-        break;
-      case "BracketRight":
-        figure.rotate("clockwise");
-        break;
-      case "KeyQ":
-        camera.togglePosition();
-        break;
-      case "Space":
-        screenManager.zoom();
-        break;
-    }
-  }
+  rotateFigure = direction => {
+    figure.rotate(direction);
+  };
+
+  toggleCamera = () => {
+    camera.togglePosition();
+  };
+
+  zoom = () => {
+    screenManager.zoom();
+  };
 }
 
 export default Game;
