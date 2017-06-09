@@ -5,15 +5,23 @@ const startScreenEl = document.getElementById("start-screen");
 const startButtonEl = document.getElementById("start-button");
 const endScreenEl = document.getElementById("end-screen");
 const finalScoreEl = document.getElementById("final-score");
+const highScoreEl = document.getElementById("high-score");
 const restartButtonEl = document.getElementById("restart-button");
 const scoreEl = document.getElementById("score");
+
+let highScore = localStorage.getItem("high-score") || 0;
 
 const handleUpdateScore = score => {
   scoreEl.innerText = score;
 };
 
 const handleEndGame = ({ finalScore }) => {
+  if (finalScore > highScore) {
+    highScore = finalScore;
+    localStorage.setItem("high-score", highScore);
+  }
   finalScoreEl.innerText = finalScore;
+  highScoreEl.innerText = highScore;
   endScreenEl.style.display = "block";
   endScreenEl.className = "inactive";
   requestAnimationFrame(() => {

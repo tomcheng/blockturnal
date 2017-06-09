@@ -18,7 +18,14 @@
       display: block;
     }
     h1 {
-      margin-top: 0;
+      margin: 0 0 8px;
+      text-align: center;
+    }
+    h2 {
+      margin: 0 0 32px;
+      font-size: 21px;
+      line-height: 32px;
+      text-align: center;
     }
     #score {
       position: absolute;
@@ -73,15 +80,6 @@
     .active .screen-content {
       opacity: 1;
     }
-    .screen-content-button {
-      transition: opacity 0.4s ease-in-out 1.8s;
-    }
-    .inactive .screen-content-button {
-      opacity: 0;
-    }
-    .active .screen-content-button {
-      opacity: 1;
-    }
   </style>
 </head>
 <body>
@@ -98,9 +96,13 @@
 <div id="end-screen">
   <div class="background"></div>
   <div class="screen-content">
-    <h1>You lost. Your final score was <span id="final-score"></span>.</h1>
+    <h1>You Lost</h1>
+    <h2>
+      Final Score: <span id="final-score"></span><br />
+      High Score: <span id="high-score"></span>
+    </h2>
     <div>
-      <button id="restart-button" class="screen-content-button">Try Again</button>
+      <button id="restart-button">Try Again</button>
     </div>
   </div>
 </div>

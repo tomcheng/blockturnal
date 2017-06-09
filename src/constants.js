@@ -23,7 +23,7 @@ export const LOSER_MATERIAL = new T.MeshLambertMaterial({
   color: 0xff0000,
 });
 
-export const INITIAL_RATE = 10;
+export const INITIAL_RATE = 8;
 export const ZOOM_RATE = 400;
 
 export const INITIAL_FIGURE = [
