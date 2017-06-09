@@ -3,22 +3,38 @@ import debounce from "lodash/debounce";
 
 const startScreenEl = document.getElementById("start-screen");
 const startButtonEl = document.getElementById("start-button");
+const endScreenEl = document.getElementById("end-screen");
+const finalScoreEl = document.getElementById("final-score");
+const restartButtonEl = document.getElementById("restart-button");
 const scoreEl = document.getElementById("score");
+
+endScreenEl.style.display = "none";
 
 const handleUpdateScore = score => {
   scoreEl.innerText = score;
 };
 
+const handleEndGame = ({ finalScore }) => {
+  endScreenEl.style.display = "flex";
+  finalScoreEl.innerText = finalScore;
+};
+
 const game = new Game({
   width: window.innerWidth,
   height: window.innerHeight,
-  onUpdateScore: handleUpdateScore
+  onUpdateScore: handleUpdateScore,
+  onEndGame: handleEndGame
 });
 
-startButtonEl.addEventListener("click", () => {
+const startGame = () => {
   startScreenEl.style.display = "none";
+  endScreenEl.style.display = "none";
+  game.reset();
   game.start();
-});
+};
+
+startButtonEl.addEventListener("click", startGame);
+restartButtonEl.addEventListener("click", startGame);
 
 window.addEventListener(
   "resize",

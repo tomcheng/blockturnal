@@ -13,8 +13,10 @@ let requestId = null;
 let score = 0;
 
 class Game {
-  constructor({ width, height, onUpdateScore }) {
+  constructor({ width, height, onUpdateScore, onEndGame }) {
     this.onUpdateScore = onUpdateScore;
+    this.onEndGame = onEndGame;
+
     this.onUpdateScore(0);
 
     renderer.gammaInput = true;
@@ -49,6 +51,7 @@ class Game {
       screenManager.stop();
       cancelAnimationFrame(requestId);
       requestId = null;
+      this.onEndGame({ finalScore: score });
     }
 
     if (screenManager.isPastFigure()) {
@@ -68,6 +71,16 @@ class Game {
 
   getDomElement = () => renderer.domElement;
 
+  reset = () => {
+    score = 0;
+    this.onUpdateScore(score);
+
+    figure.reset();
+    screenManager.reset();
+    screenManager.setNewHole(figure.getRandomProjection());
+    this.animate();
+  };
+
   start = () => {
     this.animate();
   };
@@ -77,19 +90,6 @@ class Game {
   };
 
   handleInput = code => {
-    if (!requestId) {
-      if (code === "Space") {
-        score = 0;
-        this.onUpdateScore(score);
-
-        figure.reset();
-        screenManager.reset();
-        screenManager.setNewHole(figure.getRandomProjection());
-        this.animate();
-      }
-      return;
-    }
-
     switch (code) {
       case "ArrowDown":
         figure.rotate("down");

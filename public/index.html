@@ -26,7 +26,7 @@
       line-height: 48px;
       letter-spacing: 2px;
     }
-    #start-screen {
+    #start-screen, #end-screen {
       position: fixed;
       z-index: 2;
       top: 0;
@@ -50,6 +50,12 @@
   <h1>Oh herro...</h1>
   <div>
     <button id="start-button">Start</button>
+  </div>
+</div>
+<div id="end-screen">
+  <h1>You lost. Your final score was <span id="final-score"></span></h1>
+  <div>
+    <button id="restart-button">Try Again</button>
   </div>
 </div>
 <script src="/bundle.js"></script>
