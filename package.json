@@ -7,7 +7,9 @@
     "clean": "rimraf ./dist",
     "build": "npm run clean && webpack -p && cp ./public/* ./dist",
     "start": "webpack-dev-server",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "author": "Thomas Cheng",
   "license": "ISC",
@@ -18,9 +20,10 @@
   "devDependencies": {
     "babel-core": "6.24.1",
     "babel-loader": "7.0.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-class-properties": "6.24.1",
     "babel-plugin-transform-object-rest-spread": "6.23.0",
     "babel-preset-env": "1.5.1",
+    "gh-pages": "1.0.0",
     "jest": "20.0.4",
     "rimraf": "2.6.1",
     "webpack": "2.6.1",
