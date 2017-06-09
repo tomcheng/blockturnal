@@ -70,7 +70,11 @@ class Screen {
       }
 
       if (isZooming) {
-        mesh.translateZ(ZOOM_RATE);
+        if (mesh.position.z + ZOOM_RATE > 0) {
+          mesh.translateZ(Math.max(INITIAL_RATE, -mesh.position.z));
+        } else {
+          mesh.translateZ(ZOOM_RATE);
+        }
       } else {
         mesh.translateZ(INITIAL_RATE);
       }
