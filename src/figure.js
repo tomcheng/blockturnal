@@ -81,6 +81,8 @@ class Figure {
       generateCubesAndMesh();
     };
 
+    this.getBlockCount = () => unitCoordinates.length;
+
     this.update = () => {
       Quaternion.slerp(
         mesh.quaternion,

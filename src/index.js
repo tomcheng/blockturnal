@@ -1,12 +1,14 @@
 import * as T from "three";
-import { INITIAL_SCREEN_DISTANCE } from "./constants"
-;import Camera from "./camera";
+import { INITIAL_SCREEN_DISTANCE } from "./constants";
+import Environment from "./environment";
+import Camera from "./camera";
 import Figure from "./figure";
 import ScreenManager from "./screenManager";
 
 const scene = new T.Scene();
 const renderer = new T.WebGLRenderer();
 
+const environment = new Environment();
 const camera = new Camera();
 const figure = new Figure();
 const screenManager = new ScreenManager();
@@ -22,6 +24,7 @@ const handleKeyDown = evt => {
     if (evt.code === "Space") {
       figure.reset();
       screenManager.reset();
+      environment.resetScore();
       screenManager.setNewHole(figure.getRandomProjection());
       ended = false;
     }
@@ -69,6 +72,7 @@ const animate = () => {
   }
 
   if (screenManager.isPastFigure()) {
+    environment.updateScore();
     figure.addBlocks();
     camera.updateOffset(0.5 * figure.maxDimension);
     screenManager.setNextScreen(figure.getRandomProjection());
