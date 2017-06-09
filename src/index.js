@@ -1,132 +1,38 @@
-import * as T from "three";
-import { INITIAL_SCREEN_DISTANCE } from "./constants";
-import Environment from "./environment";
-import Camera from "./camera";
-import Figure from "./figure";
-import ScreenManager from "./screenManager";
+import Game from "./game";
 import debounce from "lodash/debounce";
 
-const scene = new T.Scene();
-const renderer = new T.WebGLRenderer();
+const startScreenEl = document.getElementById("start-screen");
+const startButtonEl = document.getElementById("start-button");
+const scoreEl = document.getElementById("score");
 
-const environment = new Environment();
-const camera = new Camera();
-const figure = new Figure();
-const screenManager = new ScreenManager();
+const handleUpdateScore = score => {
+  scoreEl.innerText = score;
+};
 
-let gameEnded = false;
-let gameRunning = false;
+const game = new Game({
+  width: window.innerWidth,
+  height: window.innerHeight,
+  onUpdateScore: handleUpdateScore
+});
 
-const handleKeyDown = evt => {
+startButtonEl.addEventListener("click", () => {
+  startScreenEl.style.display = "none";
+  game.start();
+});
+
+window.addEventListener(
+  "resize",
+  debounce(() => {
+    game.resize(window.innerWidth, window.innerHeight);
+  }, 300)
+);
+
+window.addEventListener("keydown", evt => {
   if (["ArrowDown", "ArrowUp", "Space"].includes(evt.code)) {
     evt.preventDefault();
   }
 
-  if (gameEnded) {
-    if (evt.code === "Space") {
-      figure.reset();
-      screenManager.reset();
-      environment.resetScore();
-      screenManager.setNewHole(figure.getRandomProjection());
-      gameEnded = false;
-    }
-    return;
-  }
+  game.handleInput(evt.code);
+});
 
-  switch (evt.code) {
-    case "ArrowDown":
-      figure.rotate("down");
-      break;
-    case "ArrowUp":
-      figure.rotate("up");
-      break;
-    case "ArrowLeft":
-      figure.rotate("left");
-      break;
-    case "ArrowRight":
-      figure.rotate("right");
-      break;
-    case "BracketLeft":
-      figure.rotate("counter-clockwise");
-      break;
-    case "BracketRight":
-      figure.rotate("clockwise");
-      break;
-    case "KeyQ":
-      camera.togglePosition();
-      break;
-    case "Space":
-      screenManager.zoom();
-      break;
-  }
-};
-
-const handleResize = debounce(() => {
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}, 100);
-
-const animate = () => {
-  requestAnimationFrame(animate);
-
-  if (!gameRunning) {
-    return;
-  }
-
-  if (
-    screenManager.isAtFigure() &&
-    !screenManager.checkFit(figure.getCurrentProjection())
-  ) {
-    figure.turnRed();
-    screenManager.stop();
-    gameEnded = true;
-  }
-
-  if (screenManager.isPastFigure()) {
-    environment.updateScore();
-    figure.addBlocks();
-    camera.updateOffset(0.5 * figure.maxDimension);
-    screenManager.setNextScreen(figure.getRandomProjection());
-  }
-
-  figure.update();
-  camera.update();
-  screenManager.update();
-  renderer.render(scene, camera.camera);
-};
-
-(() => {
-  window.addEventListener("keydown", handleKeyDown);
-  window.addEventListener("resize", handleResize);
-
-  const startScreenEl = document.getElementById("start-screen");
-  const startButtonEl = document.getElementById("start-button");
-
-  startButtonEl.addEventListener("click", () => {
-    startScreenEl.style.display = "none";
-    gameRunning = true;
-  });
-
-  renderer.gammaInput = true;
-  renderer.gammeOutput = true;
-
-  scene.background = new T.Color(0x8bd9f2);
-  scene.fog = new T.Fog(0x8bd9f2, 1, 1.5 * INITIAL_SCREEN_DISTANCE);
-
-  scene.add(new T.AmbientLight(0x404040));
-
-  const light = new T.DirectionalLight();
-  light.position.set(-3, 5, 7);
-  scene.add(light);
-
-  screenManager.setNewHole(figure.getRandomProjection());
-  screenManager.getScreens().forEach(s => {
-    scene.add(s.mesh);
-  });
-
-  scene.add(figure.mesh);
-
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
-
-  animate();
-})();
+document.body.appendChild(game.getDomElement());
