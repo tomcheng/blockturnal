@@ -4,6 +4,7 @@ import Environment from "./environment";
 import Camera from "./camera";
 import Figure from "./figure";
 import ScreenManager from "./screenManager";
+import debounce from "lodash/debounce";
 
 const scene = new T.Scene();
 const renderer = new T.WebGLRenderer();
@@ -59,6 +60,10 @@ const handleKeyDown = evt => {
   }
 };
 
+const handleResize = debounce(() => {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}, 100);
+
 const animate = () => {
   requestAnimationFrame(animate);
 
@@ -86,6 +91,7 @@ const animate = () => {
 
 (() => {
   window.addEventListener("keydown", handleKeyDown);
+  window.addEventListener("resize", handleResize);
 
   renderer.gammaInput = true;
   renderer.gammeOutput = true;
