@@ -1,3 +1,4 @@
+import registerServiceWorker from "./registerServiceWorker";
 import Game from "./game";
 import debounce from "lodash/debounce";
 import { deviceHasTouch } from "./utils";
@@ -79,3 +80,4 @@ if (deviceHasTouch()) {
 }
 
 document.body.appendChild(game.getDomElement());
+registerServiceWorker();

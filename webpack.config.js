@@ -1,6 +1,7 @@
-var path = require("path");
+const path = require("path");
+const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
-module.exports = {
+const config = {
   entry: "./src/index.js",
   output: {
     filename: "bundle.js",
@@ -18,5 +19,20 @@ module.exports = {
         loader: "babel-loader"
       }
     ]
-  }
+  },
+  plugins: []
 };
+
+if (process.env.NODE_ENV === "production") {
+  config.plugins.push(
+    new SWPrecacheWebpackPlugin({
+      dontCacheBustUrlsMatching: /\.\w{8}\./,
+      filename: "service-worker.js",
+      minify: true,
+      navigateFallback: "https://blockturnal.com/index.html",
+      staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
+    })
+  );
+}
+
+module.exports = config;
