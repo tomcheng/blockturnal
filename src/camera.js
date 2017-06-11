@@ -13,8 +13,9 @@ const camera = new PerspectiveCamera(
   1,
   INITIAL_SCREEN_DISTANCE + CAMERA_DISTANCE + 10
 );
-let desiredPosition = "left";
+let side = "left";
 let offset = UNIT_SIZE + CAMERA_OFFSET;
+let orientation;
 
 class Camera {
   constructor() {
@@ -27,7 +28,7 @@ class Camera {
   }
 
   togglePosition = () => {
-    desiredPosition = desiredPosition === "left" ? "right" : "left";
+    side = side === "left" ? "right" : "left";
   };
 
   updateOffset = additionalOffset => {
@@ -35,19 +36,24 @@ class Camera {
   };
 
   update = () => {
-    camera.translateX(
-      -CAMERA_POSITION_DECAY *
-      (camera.position.x - (desiredPosition === "left" ? -offset : offset))
-    );
-    camera.translateY(
-      -CAMERA_POSITION_DECAY * (camera.position.y - 0.5 * offset)
-    );
+    const desiredX = orientation === "landscape"
+      ? side === "left" ? -offset : offset
+      : 0;
+    const desiredY = orientation === "landscape" ? 0.5 * offset : offset;
+    camera.translateX(CAMERA_POSITION_DECAY * (desiredX - camera.position.x));
+    camera.translateY(CAMERA_POSITION_DECAY * (desiredY - camera.position.y));
   };
 
   setSize = (width, height) => {
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
-  }
+    orientation = height > width ? "portrait" : "landscape";
+    if (orientation === "portrait") {
+      camera.setViewOffset(width, height, 0, 0.2 * height, width, height);
+    } else {
+      camera.setViewOffset(width, height, 0, 0, width, height);
+    }
+  };
 }
 
 export default Camera;
