@@ -1,6 +1,8 @@
 import Game from "./game";
 import debounce from "lodash/debounce";
-import { initializeInputs } from "./inputs";
+import { deviceHasTouch } from "./utils";
+import { initializeKeyboard } from "./keyboard";
+import { initializeTouch } from "./touch";
 
 const startScreenEl = document.getElementById("start-screen");
 const startButtonEl = document.getElementById("start-button");
@@ -59,7 +61,7 @@ window.addEventListener(
   }, 300)
 );
 
-initializeInputs({
+initializeKeyboard({
   getGameRunning: game.isRunning,
   getGamePlayed: () => gamePlayed,
   rotateFigure: game.rotateFigure,
@@ -68,5 +70,12 @@ initializeInputs({
   startGame,
   restartGame
 });
+
+if (deviceHasTouch()) {
+  initializeTouch({
+    toggleCamera: game.toggleCamera,
+    zoom: game.zoom
+  });
+}
 
 document.body.appendChild(game.getDomElement());

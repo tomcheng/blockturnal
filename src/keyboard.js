@@ -1,32 +1,4 @@
-import { deviceHasTouch } from "./utils";
-
-const touchEl = document.getElementById("touch");
-
-export const initializeInputs = ({
-  getGameRunning,
-  getGamePlayed,
-  rotateFigure,
-  toggleCamera,
-  zoom,
-  startGame,
-  restartGame
-}) => {
-  initializeKeyboard({
-    getGameRunning,
-    getGamePlayed,
-    rotateFigure,
-    toggleCamera,
-    zoom,
-    startGame,
-    restartGame
-  });
-
-  if (deviceHasTouch()) {
-    initializeTouch({ rotateFigure, toggleCamera, zoom });
-  }
-};
-
-const initializeKeyboard = ({
+export const initializeKeyboard = ({
   getGameRunning,
   getGamePlayed,
   rotateFigure,
@@ -80,6 +52,3 @@ const initializeKeyboard = ({
   });
 };
 
-const initializeTouch = ({ zoom, rotateFigure, toggleCamera }) => {
-  touchEl.addEventListener("touchstart", () => {});
-};
