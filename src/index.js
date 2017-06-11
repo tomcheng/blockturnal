@@ -1,5 +1,6 @@
 import Game from "./game";
 import debounce from "lodash/debounce";
+import { initializeInputs } from "./inputs";
 
 const startScreenEl = document.getElementById("start-screen");
 const startButtonEl = document.getElementById("start-button");
@@ -58,49 +59,14 @@ window.addEventListener(
   }, 300)
 );
 
-window.addEventListener("keydown", evt => {
-  if (["ArrowDown", "ArrowUp", "Space", "Tab"].includes(evt.code)) {
-    evt.preventDefault();
-  }
-
-  if (game.isRunning()) {
-    switch(evt.code) {
-      case "ArrowDown":
-        game.rotateFigure("down");
-        break;
-      case "ArrowUp":
-        game.rotateFigure("up");
-        break;
-      case "ArrowLeft":
-        game.rotateFigure("left");
-        break;
-      case "ArrowRight":
-        game.rotateFigure("right");
-        break;
-      case "BracketLeft":
-        game.rotateFigure("counter-clockwise");
-        break;
-      case "BracketRight":
-        game.rotateFigure("clockwise");
-        break;
-      case "KeyQ":
-      case "Tab":
-        game.toggleCamera();
-        break;
-      case "Space":
-        game.zoom();
-        break;
-    }
-  } else {
-    if (evt.code === "Space") {
-      if (gamePlayed) {
-        restartGame();
-      } else {
-        startGame();
-      }
-    }
-  }
-
+initializeInputs({
+  getGameRunning: game.isRunning,
+  getGamePlayed: () => gamePlayed,
+  rotateFigure: game.rotateFigure,
+  toggleCamera: game.toggleCamera,
+  zoom: game.zoom,
+  startGame,
+  restartGame
 });
 
 document.body.appendChild(game.getDomElement());
