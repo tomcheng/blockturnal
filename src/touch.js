@@ -2,7 +2,7 @@ import clone from "lodash/clone";
 
 const touchEl = document.getElementById("touch");
 
-const UNIT = 50;
+const UNIT = 60;
 let initial = null;
 let rotations = null;
 let rotated = false;
