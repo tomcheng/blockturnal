@@ -62,18 +62,18 @@ window.addEventListener(
 );
 
 initializeKeyboard({
+  rotateFigure: game.rotateFigure,
+  zoom: game.zoom,
+  toggleCamera: game.toggleCamera,
   getGameRunning: game.isRunning,
   getGamePlayed: () => gamePlayed,
-  rotateFigure: game.rotateFigure,
-  toggleCamera: game.toggleCamera,
-  zoom: game.zoom,
   startGame,
   restartGame
 });
 
 if (deviceHasTouch()) {
   initializeTouch({
-    toggleCamera: game.toggleCamera,
+    rotateFigure: game.rotateFigure,
     zoom: game.zoom
   });
 }
