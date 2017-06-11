@@ -3,9 +3,20 @@ import clone from "lodash/clone";
 const touchEl = document.getElementById("touch");
 
 const UNIT = 60;
+const TAP_TIME_THRESHOLD = 300;
+const TAP_MOVEMENT_THRESHOLD = 9;
+
 let initial = null;
 let rotations = null;
 let rotated = false;
+let touchStartTime = null;
+let tapMovementThresholdPast = false;
+
+const distanceBetween = (p1, p2) => {
+  const dx = p1.x - p2.x;
+  const dy = p1.y - p2.y;
+  return Math.sqrt(dx * dx + dy * dy);
+};
 
 export const initializeTouch = ({ zoom, rotateFigure }) => {
   touchEl.style.display = "block";
@@ -16,15 +27,26 @@ export const initializeTouch = ({ zoom, rotateFigure }) => {
     initial = { x: evt.touches[0].clientX, y: evt.touches[0].clientY };
     rotations = { x: 0, y: 0 };
     rotated = false;
+    touchStartTime = new Date().getTime();
+    tapMovementThresholdPast = false;
   });
 
   touchEl.addEventListener("touchmove", evt => {
     evt.preventDefault();
 
+    const current = { x: evt.touches[0].clientX, y: evt.touches[0].clientY };
+
+    if (
+      !tapMovementThresholdPast &&
+      distanceBetween(initial, current) > TAP_MOVEMENT_THRESHOLD
+    ) {
+      tapMovementThresholdPast = true;
+    }
+
     const previousRotations = clone(rotations);
 
-    rotations.x = Math.round((evt.touches[0].clientX - initial.x) / UNIT);
-    rotations.y = Math.round((evt.touches[0].clientY - initial.y) / UNIT);
+    rotations.x = Math.round((current.x - initial.x) / UNIT);
+    rotations.y = Math.round((current.y - initial.y) / UNIT);
 
     if (rotations.x > previousRotations.x) {
       rotateFigure("right");
@@ -46,7 +68,12 @@ export const initializeTouch = ({ zoom, rotateFigure }) => {
   touchEl.addEventListener("touchend", evt => {
     evt.preventDefault();
 
-    if (!rotated) {
+    const time = new Date().getTime();
+
+    if (
+      time - touchStartTime < TAP_TIME_THRESHOLD &&
+      !tapMovementThresholdPast
+    ) {
       zoom();
     }
   });
