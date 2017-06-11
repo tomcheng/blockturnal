@@ -56,16 +56,23 @@ h2 {
   line-height: 48px;
   letter-spacing: 2px;
 }
-#start-screen, #end-screen {
+#start-screen, #end-screen, #touch {
   position: fixed;
-  z-index: 2;
   top: 0;
   right: 0;
   left: 0;
   bottom: 0;
 }
-#end-screen {
+#touch {
+  z-index: 2;
   display: none;
+}
+#end-screen {
+  z-index: 3;
+  display: none;
+}
+#start-screen {
+  z-index: 4;
 }
 .background {
   position: absolute;
