@@ -19,8 +19,6 @@ let orientation;
 
 class Camera {
   constructor() {
-    camera.translateX(-offset);
-    camera.translateY(0.5 * offset);
     camera.translateZ(CAMERA_DISTANCE);
     camera.lookAt(new Vector3(0, 0, -INITIAL_SCREEN_DISTANCE));
 
