@@ -5,10 +5,9 @@
   "main": "src/index.js",
   "homepage": "http://blockturnal.com",
   "scripts": {
-    "clean": "rimraf ./dist",
-    "build": "npm run clean && NODE_ENV=production webpack -p && cp ./public/* ./dist",
-    "start": "webpack-dev-server",
-    "test": "jest --watch",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
@@ -19,16 +18,7 @@
     "three": "0.85.2"
   },
   "devDependencies": {
-    "babel-core": "6.24.1",
-    "babel-loader": "7.0.0",
-    "babel-plugin-transform-class-properties": "6.24.1",
-    "babel-plugin-transform-object-rest-spread": "6.23.0",
-    "babel-preset-env": "1.5.1",
     "gh-pages": "1.0.0",
-    "jest": "20.0.4",
-    "rimraf": "2.6.1",
-    "sw-precache-webpack-plugin": "0.9.1",
-    "webpack": "2.6.1",
-    "webpack-dev-server": "2.4.5"
+    "react-scripts": "1.0.7"
   }
 }

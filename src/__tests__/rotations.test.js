@@ -1,4 +1,4 @@
-import { rotate } from "../src/rotations";
+import { rotate } from "../rotations";
 import { Euler, Quaternion } from "three";
 
 it("rotates left", () => {

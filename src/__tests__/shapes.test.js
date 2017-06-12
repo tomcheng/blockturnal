@@ -1,6 +1,6 @@
 import { Vector2 } from "three";
-import { getOutline } from "../src/shapes";
-import { UNIT_SIZE } from "../src/constants";
+import { getOutline } from "../shapes";
+import { UNIT_SIZE } from "../constants";
 
 it("Gets an outline for a unit square", () => {
   expect(getOutline([new Vector2(0, 0)])).toEqual([

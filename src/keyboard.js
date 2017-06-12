@@ -39,6 +39,8 @@ export const initializeKeyboard = ({
         case "Space":
           zoom();
           break;
+        default:
+          break;
       }
     } else {
       if (evt.code === "Space") {

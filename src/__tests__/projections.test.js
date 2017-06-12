@@ -1,5 +1,5 @@
 import { Vector3, Vector2 } from "three";
-import { getProjection, isEquivalent } from "../src/projections";
+import { getProjection, isEquivalent } from "../projections";
 
 const coordinates = [
   new Vector3(0, 0, 0),

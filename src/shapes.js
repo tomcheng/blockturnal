@@ -43,6 +43,8 @@ export const getOutline = coordinates => {
         return new Vector2(currentPosition.x - 1, currentPosition.y + 1);
       case "down":
         return new Vector2(currentPosition.x - 1, currentPosition.y - 1);
+      default:
+        break;
     }
   };
 
@@ -56,6 +58,8 @@ export const getOutline = coordinates => {
         return new Vector2(currentPosition.x - 1, currentPosition.y);
       case "down":
         return new Vector2(currentPosition.x, currentPosition.y - 1);
+      default:
+        break;
     }
   };
 
@@ -101,6 +105,8 @@ export const getOutline = coordinates => {
         currentPosition = getRight();
         currentDirection = "left";
         break;
+      default:
+        break;
     }
   };
 
@@ -117,6 +123,8 @@ export const getOutline = coordinates => {
         break;
       case "down":
         currentPosition = getStraight();
+        break;
+      default:
         break;
     }
   };
@@ -158,6 +166,8 @@ export const getOutline = coordinates => {
           )
         );
         currentDirection = "right";
+        break;
+      default:
         break;
     }
   };

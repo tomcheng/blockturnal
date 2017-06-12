@@ -8,7 +8,6 @@ const TAP_MOVEMENT_THRESHOLD = 9;
 
 let initial = null;
 let rotations = null;
-let rotated = false;
 let touchStartTime = null;
 let tapMovementThresholdPast = false;
 
@@ -26,7 +25,6 @@ export const initializeTouch = ({ zoom, rotateFigure }) => {
 
     initial = { x: evt.touches[0].clientX, y: evt.touches[0].clientY };
     rotations = { x: 0, y: 0 };
-    rotated = false;
     touchStartTime = new Date().getTime();
     tapMovementThresholdPast = false;
   });
@@ -50,18 +48,14 @@ export const initializeTouch = ({ zoom, rotateFigure }) => {
 
     if (rotations.x > previousRotations.x) {
       rotateFigure("right");
-      rotated = true;
     } else if (rotations.x < previousRotations.x) {
       rotateFigure("left");
-      rotated = true;
     }
 
     if (rotations.y > previousRotations.y) {
       rotateFigure("down");
-      rotated = true;
     } else if (rotations.y < previousRotations.y) {
       rotateFigure("up");
-      rotated = true;
     }
   });
 

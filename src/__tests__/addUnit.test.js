@@ -1,5 +1,5 @@
 import { Vector3, Vector2 } from "three";
-import { addUnit } from "../src/addUnit";
+import { addUnit } from "../addUnit";
 
 it("Adds a unit", () => {
   const coordinates = [new Vector3(0, 0, 0)];
