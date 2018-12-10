@@ -4,6 +4,8 @@ import debounce from "lodash/debounce";
 import { deviceHasTouch } from "./utils";
 import { initializeKeyboard } from "./keyboard";
 import { initializeTouch } from "./touch";
+import "./styles/reset.css";
+import "./styles/styles.css";
 
 const startScreenEl = document.getElementById("start-screen");
 const startButtonEl = document.getElementById("start-button");
