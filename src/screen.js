@@ -11,7 +11,7 @@ import {
 import { getOutline } from "./shapes";
 import { isEquivalent } from "./projections";
 
-const extrudeSettings = { amount: 1, bevelEnabled: false };
+const extrudeSettings = { depth: 1, bevelEnabled: false };
 
 class Screen {
   constructor() {
