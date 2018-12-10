@@ -69,7 +69,7 @@ class Game {
     this.figure.update();
     this.camera.update();
     this.screenManager.update();
-    this.renderer.render(this.scene, this.camera.camera);
+    this.renderer.render(this.scene, this.camera.getCamera());
   };
 
   getDomElement = () => this.renderer.domElement;
