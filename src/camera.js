@@ -2,24 +2,21 @@ import { PerspectiveCamera, Vector3 } from "three";
 import {
   INITIAL_SCREEN_DISTANCE,
   CAMERA_POSITION_DECAY,
-  CAMERA_DISTANCE,
-  CAMERA_OFFSET,
-  UNIT_SIZE
+  INITIAL_CAMERA_DISTANCE,
 } from "./constants";
 
 const camera = new PerspectiveCamera(
   75,
   1,
   1,
-  INITIAL_SCREEN_DISTANCE + CAMERA_DISTANCE + 10
+  INITIAL_SCREEN_DISTANCE + INITIAL_CAMERA_DISTANCE + 10
 );
 let side = "left";
-let offset = UNIT_SIZE + CAMERA_OFFSET;
 let orientation;
 
 class Camera {
   constructor() {
-    camera.translateZ(CAMERA_DISTANCE);
+    this.distance = INITIAL_CAMERA_DISTANCE;
     camera.lookAt(new Vector3(0, 0, -INITIAL_SCREEN_DISTANCE));
 
     this.camera = camera;
@@ -29,15 +26,20 @@ class Camera {
     side = side === "left" ? "right" : "left";
   };
 
-  updateOffset = additionalOffset => {
-    offset = additionalOffset + CAMERA_OFFSET;
+  setOffset = offset => {
+    this.offset = offset;
+  };
+
+  setDistance = distance => {
+    this.distance = distance;
   };
 
   update = () => {
     const desiredX = orientation === "landscape"
-      ? side === "left" ? -offset : offset
+      ? side === "left" ? -this.offset : this.offset
       : 0;
-    const desiredY = orientation === "landscape" ? 0.5 * offset : offset;
+    const desiredY = orientation === "landscape" ? 0.5 * this.offset : this.offset;
+    camera.translateZ(CAMERA_POSITION_DECAY * (this.distance - camera.position.z));
     camera.translateX(CAMERA_POSITION_DECAY * (desiredX - camera.position.x));
     camera.translateY(CAMERA_POSITION_DECAY * (desiredY - camera.position.y));
   };

@@ -3,8 +3,7 @@ import * as T from "three";
 export const UNIT_SIZE = 60;
 
 export const INITIAL_SCREEN_DISTANCE = 10000;
-export const CAMERA_DISTANCE = 500;
-export const CAMERA_OFFSET = 1.5 * UNIT_SIZE;
+export const INITIAL_CAMERA_DISTANCE = 500;
 export const CAMERA_POSITION_DECAY = 0.3;
 
 export const ROTATION_DECAY = 0.4;

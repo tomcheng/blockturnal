@@ -4,85 +4,92 @@ import Camera from "./camera";
 import Figure from "./figure";
 import ScreenManager from "./screenManager";
 
-const scene = new T.Scene();
-const renderer = new T.WebGLRenderer();
-const camera = new Camera();
-const figure = new Figure();
-const screenManager = new ScreenManager();
-let requestId = null;
-let score = 0;
-
 class Game {
   constructor({ width, height, onUpdateScore, onEndGame }) {
     this.onUpdateScore = onUpdateScore;
     this.onEndGame = onEndGame;
 
+    this.requestId = null;
+    this.score = 0;
+
+    this.figure = new Figure();
+    this.camera = new Camera();
+    this.scene = new T.Scene();
+    this.renderer = new T.WebGLRenderer();
+    this.screenManager = new ScreenManager();
+
     this.onUpdateScore(0);
 
-    camera.setSize(width, height);
+    this.camera.setSize(width, height);
+    this.updateCameraPosition();
 
-    renderer.gammaInput = true;
-    renderer.gammeOutput = true;
-    renderer.setSize(width, height);
+    this.renderer.gammaInput = true;
+    this.renderer.gammeOutput = true;
+    this.renderer.setSize(width, height);
 
-    scene.background = new T.Color(0x8bd9f2);
-    scene.fog = new T.Fog(0x8bd9f2, 1, 1.5 * INITIAL_SCREEN_DISTANCE);
+    this.scene.background = new T.Color(0x8bd9f2);
+    this.scene.fog = new T.Fog(0x8bd9f2, 1, 1.5 * INITIAL_SCREEN_DISTANCE);
 
-    scene.add(new T.AmbientLight(0x404040));
+    this.scene.add(new T.AmbientLight(0x404040));
 
     const light = new T.DirectionalLight();
     light.position.set(-3, 5, 7);
-    scene.add(light);
+    this.scene.add(light);
 
-    scene.add(figure.mesh);
+    this.scene.add(this.figure.mesh);
 
-    screenManager.setNewHole(figure.getRandomProjection());
-    screenManager.getScreens().forEach(s => {
-      scene.add(s.mesh);
+    this.screenManager.setNewHole(this.figure.getRandomProjection());
+    this.screenManager.getScreens().forEach(s => {
+      this.scene.add(s.mesh);
     });
   }
 
   animate = () => {
-    requestId = requestAnimationFrame(this.animate);
+    this.requestId = requestAnimationFrame(this.animate);
 
     if (
-      screenManager.isAtFigure() &&
-      !screenManager.checkFit(figure.getCurrentProjection())
+      this.screenManager.isAtFigure() &&
+      !this.screenManager.checkFit(this.figure.getCurrentProjection())
     ) {
-      figure.turnRed();
-      screenManager.stop();
-      cancelAnimationFrame(requestId);
-      requestId = null;
-      this.onEndGame({ finalScore: score });
+      this.figure.turnRed();
+      this.screenManager.stop();
+      cancelAnimationFrame(this.requestId);
+      this.requestId = null;
+      this.onEndGame({ finalScore: this.score });
     }
 
-    if (screenManager.isPastFigure()) {
-      score += 1;
-      this.onUpdateScore(score);
-
-      figure.addBlocks();
-      camera.updateOffset(0.5 * figure.maxDimension);
-      screenManager.setNextScreen(figure.getRandomProjection());
+    if (this.screenManager.isPastFigure()) {
+      this.score += 1;
+      this.onUpdateScore(this.score);
+      this.figure.addBlocks();
+      this.updateCameraPosition();
+      this.screenManager.setNextScreen(this.figure.getRandomProjection());
     }
 
-    figure.update();
-    camera.update();
-    screenManager.update();
-    renderer.render(scene, camera.camera);
+    this.figure.update();
+    this.camera.update();
+    this.screenManager.update();
+    this.renderer.render(this.scene, this.camera.camera);
   };
 
-  getDomElement = () => renderer.domElement;
+  getDomElement = () => this.renderer.domElement;
 
-  isRunning = () => !!requestId;
+  isRunning = () => !!this.requestId;
 
   reset = () => {
-    score = 0;
-    this.onUpdateScore(score);
+    this.score = 0;
+    this.onUpdateScore(this.score);
 
-    figure.reset();
-    screenManager.reset();
-    screenManager.setNewHole(figure.getRandomProjection());
+    this.figure.reset();
+    this.screenManager.reset();
+    this.screenManager.setNewHole(this.figure.getRandomProjection());
+    this.updateCameraPosition();
     this.animate();
+  };
+
+  updateCameraPosition = () => {
+    this.camera.setDistance(500 + 0.5 * this.figure.maxDimension);
+    this.camera.setOffset(90 + 0.5 * this.figure.maxDimension);
   };
 
   start = () => {
@@ -90,20 +97,20 @@ class Game {
   };
 
   resize = (width, height) => {
-    camera.setSize(width, height);
-    renderer.setSize(width, height);
+    this.camera.setSize(width, height);
+    this.renderer.setSize(width, height);
   };
 
   rotateFigure = direction => {
-    figure.rotate(direction);
+    this.figure.rotate(direction);
   };
 
   toggleCamera = () => {
-    camera.togglePosition();
+    this.camera.togglePosition();
   };
 
   zoom = () => {
-    screenManager.zoom();
+    this.screenManager.zoom();
   };
 }
 

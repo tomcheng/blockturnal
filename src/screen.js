@@ -6,7 +6,7 @@ import {
   TRANSPARENT_MATERIAL,
   INITIAL_RATE,
   ZOOM_RATE,
-  CAMERA_DISTANCE
+  INITIAL_CAMERA_DISTANCE
 } from "./constants";
 import { getOutline } from "./shapes";
 import { isEquivalent } from "./projections";
@@ -60,13 +60,13 @@ class Screen {
 
     this.isPastFigure = () => mesh.position.z > 0;
 
-    this.isOffCamera = () => mesh.position.z > CAMERA_DISTANCE;
+    this.isOffCamera = () => mesh.position.z > INITIAL_CAMERA_DISTANCE;
 
     this.update = () => {
       if (mesh.position.z >= 0) {
         isZooming = false;
         mesh.material = TRANSPARENT_MATERIAL;
-        mesh.material.opacity = 1 - (mesh.position.z / CAMERA_DISTANCE);
+        mesh.material.opacity = 1 - (mesh.position.z / INITIAL_CAMERA_DISTANCE);
       }
 
       if (isZooming) {
