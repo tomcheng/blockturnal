@@ -30,8 +30,6 @@ export const initializeTouch = ({ zoom, rotateFigure }) => {
   });
 
   touchEl.addEventListener("touchmove", evt => {
-    evt.preventDefault();
-
     const current = { x: evt.touches[0].clientX, y: evt.touches[0].clientY };
 
     if (
@@ -57,7 +55,7 @@ export const initializeTouch = ({ zoom, rotateFigure }) => {
     } else if (rotations.y < previousRotations.y) {
       rotateFigure("up");
     }
-  });
+  }, { passive: true });
 
   touchEl.addEventListener("touchend", evt => {
     evt.preventDefault();
